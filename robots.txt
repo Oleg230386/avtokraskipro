@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://avtokraskipro.kz/sitemap.xml
+Host: https://avtokraskipro.kz
