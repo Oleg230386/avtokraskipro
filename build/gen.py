@@ -256,3 +256,4 @@ shutil.copy(B + '/yandex_6d6343c53e2e252c.html', OUT + '/yandex_6d6343c53e2e252c
 shutil.copy(B + '/app.js', OUT + '/assets/app.js')
 os.makedirs(OUT + '/docs', exist_ok=True)
 shutil.copy(B + '/D8125-tehkarta.pdf', OUT + '/docs/D8125-tehkarta.pdf')
+open(OUT + '/version.txt', 'w').write('Avtokraski_Pro build ' + datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5))).strftime('%Y-%m-%d %H:%M') + '\n')
