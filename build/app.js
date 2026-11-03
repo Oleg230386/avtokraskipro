@@ -1,0 +1,82 @@
+(function(){
+var W="77771187355",ATT="Узнать цену и наличие";function u(t){return"https://wa.me/"+W+"?text="+encodeURIComponent(t)}
+function setImg(i){var k=i.getAttribute("data-img");if(k){i.setAttribute("src","/img/"+k+".webp");i.removeAttribute("data-img")}}
+var CDL=null;function loadCD(cb){if(window.CD){cb();return}if(!CDL){CDL=[];var s=document.createElement("script");s.src="/assets/cards.js?v=1";s.onload=function(){var q=CDL;CDL=null;q.forEach(function(f){f()})};document.head.appendChild(s)}CDL.push(cb)}
+var app=document.getElementById("app");
+function mark(root){[].forEach.call(root.querySelectorAll(".card"),function(c){var tx=function(q){var e=c.querySelector(q);return e?e.textContent:""};c.setAttribute("data-t",(tx(".top")+" "+tx("h2")+" "+tx(".meta")+" "+tx(".sub")).toLowerCase())})}
+mark(app);
+document.addEventListener("input",function(e){var q=e.target;if(q.type!=="search"||q.id==="sq")return;var v=q.value.trim().toLowerCase().split(" "),n=0;[].forEach.call(app.querySelectorAll("main .card"),function(c){var t=c.getAttribute("data-t"),ok=v.every(function(w){return t.indexOf(w)>-1});c.hidden=!ok;if(ok)n++});var ct=app.querySelector(".count");if(ct)ct.textContent="Показано: "+n});
+var HST=null;
+function initHS(){var el=document.getElementById("hs");if(!el||el.getAttribute("data-ok"))return;el.setAttribute("data-ok","1");if(HST){clearTimeout(HST);HST=null}
+
+var tr=el.querySelector(".hs-tr"),IT=el.querySelectorAll(".hs-it"),N=IT.length,cur=0,bar=el.querySelector(".hs-bar"),paused=false;
+function vis(){var w=window.innerWidth;return w<=560?1:(w<=900?2:4)}
+function load(){var v=vis();for(var k=cur;k<cur+v*2&&k<N;k++){var im=IT[k].querySelector("img");if(im&&!im.getAttribute("src"))setImg(im)}}
+function go(k){var v=vis(),mx=Math.max(0,N-v);cur=k>mx?0:(k<0?mx:k);tr.style.transform="translateX("+(-cur*100/v)+"%)";load();run()}
+function run(){if(HST)clearTimeout(HST);bar.classList.remove("run");void bar.offsetWidth;if(paused||!document.body.contains(el))return;bar.classList.add("run");HST=setTimeout(function(){if(document.body.contains(el))go(cur+1)},4000)}
+el.querySelector(".hs-prev").addEventListener("click",function(){go(cur-1)});el.querySelector(".hs-next").addEventListener("click",function(){go(cur+1)});
+el.addEventListener("mouseenter",function(){paused=true;run()});el.addEventListener("mouseleave",function(){paused=false;run()});
+var x0=null;el.addEventListener("touchstart",function(e){x0=e.touches[0].clientX},{passive:true});el.addEventListener("touchend",function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>40)go(cur+(dx<0?1:-1))});
+window.addEventListener("resize",function(){if(document.body.contains(el))go(cur)});
+function more(it){var w=document.createElement("div");w.innerHTML=(window.HSC||{})[it.getAttribute("data-i")]||"";if(!w.firstChild)return;var c=w.firstChild,sb=c.querySelector(".sub"),t=c.querySelector("h2").textContent,km=sb?sb.textContent.match(/^Код: (.*?)(?:\. Фасовка:.*)?$/):null,cd=km?km[1]:"",nm=cd&&t.indexOf(cd+" · ")===0?t.slice(cd.length+3):t,wa=c.querySelector("a.wa");
+if(wa)wa.setAttribute("href",u("Здравствуйте! Интересует товар: "+nm+(cd?" (код "+cd+")":"")+". Подскажите цену и наличие."));var a=it.querySelector("img"),b=c.querySelector("img.ph");if(a&&b&&a.getAttribute("src"))b.setAttribute("src",a.getAttribute("src"));if(window.openP)window.openP(c)}
+[].forEach.call(IT,function(it){it.addEventListener("click",function(){more(it)});it.addEventListener("keydown",function(e){if(e.key==="Enter")more(it)})});
+go(0);if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches){paused=true;run()}}
+
+initHS();
+(function(){var pv=document.createElement("div");pv.id="pv";pv.hidden=true;pv.setAttribute("role","dialog");pv.setAttribute("aria-modal","true");document.body.appendChild(pv);var pushed=false;
+function esc(t){var d=document.createElement("div");d.textContent=t;return d.innerHTML}
+var DOCS={"D8125":{pdf:"/docs/D8125-tehkarta.pdf",src:"PPG, техническая информация, январь 2020 (RLD276)",rows:[["Пропорция смешивания (по объёму)","лак D8125 — 2 части, отвердитель D826x — 1 часть, разбавитель D808/D807/D812/D8746 — 0,5 части"],["Вязкость","14–16 сек по DIN4 при 20°C"],["Жизнеспособность","2 часа при 20°C"],["Краскопульт","с верхним бачком, дюза 1,2–1,3 мм"],["Нанесение","2 полных слоя, сухая плёнка 50–60 мкм, выдержка между слоями 2 минуты. Или 1 лёгкий слой и затем полный, сухая плёнка 50 мкм, выдержка не нужна"],["Сушка при 60°C","15 мин (D8262, D8263), 20 мин (D8264)"],["Сушка при 40°C","30 мин"],["Воздушная сушка 20°C","до полировки 4 часа"],["ИК-сушка","коротковолновая около 5 мин, средневолновая около 10 мин; использовать разбавитель D8746"],["Основа","чистое беспыльное базовое покрытие PPG Envirobase High Performance или Deltron; перед нанесением липкая салфетка"],["Перекрас","шлифовка P800 (мокрая) или P400 (сухая)"],["VOC","не более 420 г/л в готовом виде"]],hard:[["до 20°C","D8262","D808 / D807"],["20–30°C","D8263","D807 / D812"],["свыше 30°C","D8264","D8746"]]}};
+function tds(code){var k=null;for(var d in DOCS){if(code.indexOf(d)===0)k=d}if(!k)return"";var o=DOCS[k],h='<div class="tds"><h3>Техническая информация</h3><p class="src">'+esc(o.src)+'</p><dl>';o.rows.forEach(function(r){h+="<dt>"+esc(r[0])+"</dt><dd>"+esc(r[1])+"</dd>"});h+='</dl><table><thead><tr><th>Температура</th><th>Отвердитель</th><th>Разбавитель</th></tr></thead><tbody>';o.hard.forEach(function(r){h+="<tr><td>"+esc(r[0])+"</td><td>"+esc(r[1])+"</td><td>"+esc(r[2])+"</td></tr>"});h+='</tbody></table><a class="btn doc" href="'+o.pdf+'" target="_blank" rel="noopener">Открыть полную техкарту (PDF)</a></div>';return h}
+window.openP=openP;
+function openP(c){var im=c.querySelector("img.ph"),cat=(c.querySelector(".top")||{}).textContent||"",ti=c.querySelector("h2").textContent,me=(c.querySelector(".meta")||{}).textContent||"",sb=(c.querySelector(".sub")||{}).textContent||"",ds=c.querySelector(".desc"),pr=c.querySelector(".price"),wa=c.querySelector("a.wa");
+var rows="",m=sb.match(/Код:\s*(.*?)(?:\.\s*Фасовка:|\.?$)/),f=sb.match(/Фасовка:\s*(.*)$/);if(me)rows+="<dt>Бренд / серия</dt><dd>"+esc(me)+"</dd>";if(cat)rows+="<dt>Раздел</dt><dd>"+esc(cat)+"</dd>";if(m)rows+="<dt>Код товара</dt><dd>"+esc(m[1].trim())+"</dd>";if(f)rows+="<dt>Фасовка</dt><dd>"+esc(f[1].trim())+"</dd>";if(!m&&!f&&sb)rows+="<dt>Данные</dt><dd>"+esc(sb)+"</dd>";
+var h='<div class="pvw"><button class="pvb" type="button" id="pvx">← Назад к каталогу</button>';
+h+=im&&im.getAttribute("src")?'<img class="pvi" src="'+im.getAttribute("src")+'" alt="'+esc(im.alt||ti)+'">':'<div class="pvn">Фото товара скоро появится</div>';
+h+='<div class="pvc">'+esc(cat)+'</div><h1>'+esc(ti)+'</h1>'+(rows?'<dl>'+rows+'</dl>':'');
+h+='<h3>Описание</h3>'+(ds?'<p class="pvd">'+esc(ds.textContent)+'</p>':'<p class="pvd none">Подробное описание, применение и совместимость уточняйте у менеджера в WhatsApp.</p>');
+h+=tds(m?m[1].trim():"");h+=(pr?'<div class="price">'+pr.innerHTML+'</div>':'')+(wa?'<a class="btn" href="'+wa.getAttribute("href")+'" target="_blank" rel="noopener">Узнать цену и наличие</a>':'')+'</div>';
+pv.innerHTML=h;pv.hidden=false;pv.scrollTop=0;document.body.style.overflow="hidden";document.getElementById("pvx").focus();try{history.pushState({pv:1},"");pushed=true}catch(e){pushed=false}}
+function closeP(fromPop){if(pv.hidden)return;pv.hidden=true;pv.innerHTML="";document.body.style.overflow="";if(pushed&&!fromPop){pushed=false;try{history.back()}catch(e){}}else pushed=false}
+document.addEventListener("click",function(e){var t=e.target;if(t.closest("#pvx")){closeP();return}if(t.closest("#pv"))return;var c=t.closest(".card");if(!c||t.closest("a"))return;openP(c)},false);
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeP()});
+window.addEventListener("popstate",function(){closeP(true)});
+
+})();
+(function(){
+var SEC=[["laki","Лаки"],["grunty","Грунты"],["aerozoli","Аэрозоли"],["shpatlevki","Шпатлёвки"],["otverditeli","Разбавители"],["abrazivy","Абразивы"],["lenty","Ленты и маскировка"],["raspyliteli","Краскопульты"],["avtohimiya","Автохимия и полировка"],["oborudovanie","Оборудование"],["prochee","Прочие материалы"]];
+var BRS=[["ppg","PPG"],["u-pol","U-POL"],["ranal","RANAL"],["selemix","Selemix"],["norton","Norton"],["autolux","AutoLux"],["ik","IK Sprayers"],["carpro","CarPro"],["nar-ppm-hpx","NAR PPM HPX"],["matequs","Matequs"],["usi","USI Italia Millibar Walmec Anest Iwata GYS Rupes"]];
+var EN={lacquer:"лак",clearcoat:"лак",clear:"лак",varnish:"лак",primer:"грунт",filler:"грунт",putty:"шпатлев",thinner:"разбавител",aerosol:"аэрозол",spray:"аэрозол",gun:"краскопульт",sprayer:"распылител",abrasive:"абразив",sandpaper:"абразив",наждачка:"абразив",наждачки:"абразив",наждачку:"абразив",наждачкой:"абразив",наждачная:"абразив",наждачный:"абразив",наждак:"абразив",шкурка:"абразив",шкурки:"абразив",шкурку:"абразив",tape:"лент",masking:"маскиров",polish:"полиров",polishing:"полиров",equipment:"оборудован",welding:"сварк",sealant:"герметик",paint:"краск"};
+var RL="йцукенгшщзхъфывапролджэячсмитьбю",LL="qwertyuiop[]asdfghjkl;'zxcvbnm,.";
+var CY={а:"a",б:"b",в:"v",г:"g",д:"d",е:"e",ж:"zh",з:"z",и:"i",й:"y",к:"k",л:"l",м:"m",н:"n",о:"o",п:"p",р:"r",с:"s",т:"t",у:"u",ф:"f",х:"h",ц:"c",ч:"ch",ш:"sh",щ:"sch",ы:"y",э:"e",ю:"yu",я:"ya"};
+function norm(t){return String(t).toLowerCase().replace(/ё/g,"е")}
+function swap(t,a,b){var o="";for(var i=0;i<t.length;i++){var k=a.indexOf(t[i]);o+=k>-1?b[k]:t[i]}return o}
+function tr(t){var o="";for(var i=0;i<t.length;i++)o+=CY[t[i]]!=null?CY[t[i]]:t[i];return o}
+function stem(t){if(t.length>3&&/[аеиыюяьйуо]$/.test(t))t=t.slice(0,-1);return t}
+function alts(tok){var a=[stem(tok)];if(EN[tok])a.push(EN[tok]);var s1=norm(swap(tok,LL,RL));if(s1!==tok)a.push(stem(s1));var s2=norm(swap(tok,RL,LL));if(s2!==tok)a.push(s2);if(/[а-я]/.test(tok))a.push(tr(tok));return a}
+function toks(q){return norm(q).replace(/[«»"']/g," ").split(/[\s,;]+/).filter(Boolean)}
+function matchAll(text,tk){for(var i=0;i<tk.length;i++){var al=alts(tk[i]),ok=false;for(var j=0;j<al.length;j++){if(text.indexOf(al[j])>-1){ok=true;break}}if(!ok)return false}return true}
+function dec(t){return t.replace(/&quot;/g,'"').replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&#39;/g,"'")}
+var IDX=null;
+function build(){if(IDX||!window.CD)return;var CD=window.CD;IDX=[];var seen={};for(var i=0;i<CD.length;i++){var c=CD[i],h2=(c.match(/<h2>(.*?)<\/h2>/)||[,""])[1],pr=(c.match(/class="price">(.*?)<\/div>/)||[,""])[1];if(!c)continue;var key=h2+"|"+pr;if(seen[key])continue;seen[key]=1;var body=c.replace(/<div class="price">.*?<\/div>/,"").replace(/<(img|a)[^>]*>/g," ").replace(/<[^>]+>/g," ");IDX.push({c:c,t:norm(dec(body)),h:norm(dec(h2))})}}
+var sv=document.createElement("div");sv.id="sv";sv.hidden=true;sv.setAttribute("role","dialog");sv.setAttribute("aria-modal","true");
+sv.innerHTML='<div class="svw"><div class="svh"><input type="search" id="sq" placeholder="Название, артикул, бренд…" autocomplete="off" autocapitalize="off" aria-label="Поиск по каталогу"><button type="button" class="svx" id="svx">Закрыть</button></div><div class="svm" id="svm"></div><div class="svs" id="svs"></div><div class="grid" id="svr"></div><button type="button" class="btn ghost more" id="svmore" hidden>Показать ещё</button></div>';
+document.body.appendChild(sv);
+var sq=sv.querySelector("#sq"),svm=sv.querySelector("#svm"),svs=sv.querySelector("#svs"),svr=sv.querySelector("#svr"),svmore=sv.querySelector("#svmore");
+var RES=[],SHOWN=0,STEP=40,pushed=false,timer=null;
+function hydrate(root){[].forEach.call(root.querySelectorAll(".card"),function(c){var tx=function(q){var e=c.querySelector(q);return e?e.textContent:""},t=tx("h2"),sb=tx(".sub");c.setAttribute("data-t",(tx(".top")+" "+t+" "+tx(".meta")+" "+sb).toLowerCase());var a=c.querySelector("a.wa");if(a){var w=a.getAttribute("data-w");if(!w){var k=sb.match(/^Код: (.*?)(?:\. Фасовка:.*)?$/),cd=k?k[1]:null,nm=cd&&t.indexOf(cd+" · ")===0?t.slice(cd.length+3):t;w="Здравствуйте! Интересует товар: "+nm+(cd?" (код "+cd+")":"")+". Подскажите цену и наличие."}a.href=u(w);a.target="_blank";a.rel="noopener";a.textContent=ATT}});[].forEach.call(root.querySelectorAll("img[data-img]"),setImg)}
+function more(){var part=RES.slice(SHOWN,SHOWN+STEP).map(function(r){return r.c}).join("");var d=document.createElement("div");d.innerHTML=part;hydrate(d);while(d.firstChild)svr.appendChild(d.firstChild);SHOWN+=STEP;svmore.hidden=SHOWN>=RES.length}
+function links(tk){var o="";SEC.forEach(function(s){if(matchAll(norm(s[1]),tk))o+='<a class="chip" href="/'+s[0]+'/">'+s[1]+' →</a>'});BRS.forEach(function(b){if(matchAll(norm(b[1]),tk))o+='<a class="chip" href="/brand/'+b[0]+'/">'+b[1].split(" ")[0]+' →</a>'});return o}
+function run(){if(!window.CD){loadCD(run);return}build();var q=sq.value.trim();svr.innerHTML="";svs.innerHTML="";SHOWN=0;RES=[];if(!q){svm.textContent="Введите название, артикул или бренд. Можно по-русски или латиницей.";svs.innerHTML=["Raptor","Лаки","Краскопульты","PPG","Аэрозоли","D8125"].map(function(x){return'<a class="chip" href="#" data-q="'+x+'">'+x+'</a>'}).join("");svmore.hidden=true;return}
+var tk=toks(q);if(!tk.length)return;var hit=[],rest=[];IDX.forEach(function(r){if(matchAll(r.t,tk))(matchAll(r.h,tk)?hit:rest).push(r)});RES=hit.concat(rest);svm.textContent=RES.length?"Найдено: "+RES.length:"Ничего не найдено. Попробуйте другое слово или артикул.";svs.innerHTML=links(tk);more()}
+function open(){if(!sv.hidden)return;sv.hidden=false;sv.scrollTop=0;document.body.style.overflow="hidden";if(window.CD)run();else{svm.textContent="Загрузка каталога…";loadCD(run)}try{history.pushState({sv:1},"");pushed=true}catch(e){pushed=false}setTimeout(function(){sq.focus()},30)}
+function close(fromPop){if(sv.hidden)return;sv.hidden=true;document.body.style.overflow="";if(pushed&&!fromPop){pushed=false;try{history.back()}catch(e){}}else pushed=false}
+document.addEventListener("click",function(e){var t=e.target;if(t.closest(".gsb")){open();return}if(t.closest("#svx")){close();return}if(t.closest("#svmore")){more();return}var q=t.closest("#sv a[data-q]");if(q){e.preventDefault();sq.value=q.getAttribute("data-q");run();return}},false);
+sq.addEventListener("input",function(){clearTimeout(timer);timer=setTimeout(run,160)});
+sq.addEventListener("keydown",function(e){if(e.key==="Enter"){clearTimeout(timer);run();sq.blur()}});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&document.getElementById("pv").hidden)close()});
+window.addEventListener("popstate",function(e){if(!sv.hidden&&!(e.state&&e.state.sv)&&document.getElementById("pv").hidden)close(true)});
+
+})();
+
+})();
