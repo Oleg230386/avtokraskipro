@@ -9,7 +9,8 @@
 - `site/img/s*.json` — фото товаров (webp в base64), ключ = `data-img` карточки.
 - `build/gen.py` — сборка статического сайта в `static/` (страницы разделов и брендов, sitemap, robots, .htaccess, 404, version.txt).
 - `build/draft.py` — сборка черновика (одностраничная версия) в `site/index.html` + `site/app.txt` из тех же данных (шаблоны `build/draft_app.js`, `build/draft_shell.html`). Черновик = артефакт https://claude.ai/artifact/N8i7khiEpPLKnwznyXTPRC (файлы: index.html, app.txt, img/*.json, docs/).
-- `build/app.js` → `/assets/app.js`, `build/D8125-tehkarta.pdf` → `/docs/`.
+- `build/app.js` + `build/cart.js` → `/assets/app.js`, `build/D8125-tehkarta.pdf` → `/docs/`.
+- `build/cart.js` — корзина-заявка (подключается и к сайту, и к черновику): кнопка «Добавить в корзину» на карточках и в окне товара, жёлтая кнопка «Перейти в корзину», отправка списка менеджеру в WhatsApp. Оплаты нет. Корзина хранится в браузере покупателя (localStorage `akp_cart_v1`).
 
 ## Публикация
 1. Правка в `build/` или `site/`, коммит и `git push origin main`.
