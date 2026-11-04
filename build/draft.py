@@ -8,6 +8,7 @@ js = open(B + '/draft_app.js', encoding='utf8').read()
 J = lambda v: json.dumps(v, ensure_ascii=False)
 for k in ('IM', 'NAV', 'FOOT', 'ATT', 'TOP', 'CD'):
     js = js.replace('/*@%s@*/' % k, J(D[k]), 1)
+js += '\n' + open(B + '/cart.js', encoding='utf8').read()  # корзина
 app = T + '\x00' + js
 open(SITE + '/app.txt', 'w', encoding='utf8').write(app)
 z = base64.b64encode(gzip.compress(app.encode('utf8'), 9, mtime=0)).decode()

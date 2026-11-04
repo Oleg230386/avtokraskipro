@@ -136,7 +136,8 @@ LD_HOME = {
 }
 
 import hashlib
-APP_JS_VER = hashlib.md5((CSS + open(B + '/app.js', encoding='utf8').read()).encode('utf8')).hexdigest()[:8]  # меняется при любой правке оформления/скрипта — телефоны сразу берут новое
+APP_JS = open(B + '/app.js', encoding='utf8').read() + '\n' + open(B + '/cart.js', encoding='utf8').read()  # сайт + корзина
+APP_JS_VER = hashlib.md5((CSS + APP_JS).encode('utf8')).hexdigest()[:8]  # меняется при любой правке оформления/скрипта — телефоны сразу берут новое
 
 def page(pid, title_t, body):
     body = body
@@ -258,7 +259,7 @@ ExpiresByType text/html "access plus 0 seconds"
 print('done')
 shutil.copy(B + '/google099ad330cd3fe9d6.html', OUT + '/google099ad330cd3fe9d6.html')
 shutil.copy(B + '/yandex_6d6343c53e2e252c.html', OUT + '/yandex_6d6343c53e2e252c.html')
-shutil.copy(B + '/app.js', OUT + '/assets/app.js')
+open(OUT + '/assets/app.js', 'w', encoding='utf8').write(APP_JS)
 os.makedirs(OUT + '/docs', exist_ok=True)
 shutil.copy(B + '/D8125-tehkarta.pdf', OUT + '/docs/D8125-tehkarta.pdf')
 open(OUT + '/version.txt', 'w').write('Avtokraski_Pro build ' + datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5))).strftime('%Y-%m-%d %H:%M') + '\n')
