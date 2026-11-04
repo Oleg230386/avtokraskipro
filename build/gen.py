@@ -16,10 +16,13 @@ CD, NAV, FOOT, TOP, ATT = D['CD'], D['NAV'], D['FOOT'], D['TOP'], D['ATT']
 T = open(B + '/templates.html', encoding='utf8').read()
 
 # ---------- images ----------
+IV = {}  # метка версии каждой картинки: новое фото = новый адрес, телефоны сразу берут его
 def save_img(k, uri):
     head, b64 = uri.split(',', 1)
     assert 'webp' in head, (k, head)
-    open(f'{OUT}/img/{k}.webp', 'wb').write(base64.b64decode(b64))
+    raw = base64.b64decode(b64)
+    IV[k] = __import__('hashlib').md5(raw).hexdigest()[:8]
+    open(f'{OUT}/img/{k}.webp', 'wb').write(raw)
 
 for k, v in D['IM'].items():
     save_img(k, v)
@@ -200,6 +203,7 @@ def page(pid, title_t, body):
         APP_JS_VER, ld, body, hsc, APP_JS_VER)
     p = OUT + path_of(pid)
     os.makedirs(p, exist_ok=True)
+    doc = re.sub(r'(/img/([\w\-]+)\.webp)"', lambda m: m.group(1) + ('?v=' + IV[m.group(2)] if m.group(2) in IV else '') + '"', doc)
     open(p + 'index.html', 'w', encoding='utf8').write(doc)
     return path_of(pid)
 
