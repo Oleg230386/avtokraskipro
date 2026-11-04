@@ -132,7 +132,8 @@ LD_HOME = {
     "description": "Автокраски, лаки, грунты, абразивы и оборудование для кузовного ремонта в Астане."
 }
 
-APP_JS_VER = '1'
+import hashlib
+APP_JS_VER = hashlib.md5((CSS + open(B + '/app.js', encoding='utf8').read()).encode('utf8')).hexdigest()[:8]  # меняется при любой правке оформления/скрипта — телефоны сразу берут новое
 
 def page(pid, title_t, body):
     body = body
