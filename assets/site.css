@@ -146,3 +146,38 @@ footer .addr{margin:10px 0 0;color:var(--ink)}footer .addr a{color:var(--acc);fo
 #sv .grid{padding-bottom:12px}
 #sv .more{margin:4px auto 20px}
 .hbar{height:76px}.hbar-a{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:30;width:calc(100% - 32px);max-width:420px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:12px 18px;border-radius:12px;background:#15191c;color:#fff;font:600 17px/1.2 Barlow,sans-serif;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.28);border:2px solid #f2c200}.hbar-a:hover{filter:brightness(1.15)}.hbar-a svg{width:22px;height:22px;flex:none;color:#f2c200}.hbar{height:0}.wrap:has(.hbar) footer{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}.wrap:has(.hbar-up) footer{padding-bottom:calc(166px + env(safe-area-inset-bottom,0px))}body:has(#cfab:not([hidden])) .wrap:has(.hbar) footer{padding-bottom:calc(166px + env(safe-area-inset-bottom,0px))}body:has(#cfab:not([hidden])) .wrap:has(.hbar-up) footer{padding-bottom:calc(230px + env(safe-area-inset-bottom,0px))}.hcall{display:inline-flex;align-items:center;gap:8px;margin-left:auto;min-height:48px;padding:8px 14px;border-radius:8px;border:2px solid #15191c;background:#fff;color:#15191c;font:700 16px/1.1 Barlow,sans-serif;text-decoration:none;white-space:nowrap}.hcall svg{width:20px;height:20px;flex:none;color:#1e9e4a}.hcall:hover{background:#f3f4f5}.hcall-t{display:none}@media (max-width:640px){.brandline{position:relative}.hcall{position:absolute;right:0;top:4px;min-height:44px;padding:6px 12px;font-size:15px}.hcall-n{display:none}.hcall-t{display:inline}}footer .fcont{margin:0 0 18px;padding:14px;border-radius:12px;background:#fff;border:1px solid #dfe3e6;color:var(--ink)}footer .fcont .fh{display:block;margin:0 0 10px}.fcbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px}footer a.fcb{display:flex;align-items:center;gap:10px;min-height:54px;padding:8px 12px;border-radius:10px;color:#fff;text-decoration:none;font:700 17px/1.1 Barlow,sans-serif}footer a.fcb svg{width:24px;height:24px;flex:none}footer a.fcb small{display:block;font:500 13px/1.2 Barlow,sans-serif;opacity:.9;margin-top:2px}.fcall{background:#1e9e4a}.fwa{background:var(--acc)}footer .fca{margin:10px 0 0;color:var(--ink)}footer .fca a{color:var(--acc);font-weight:600}@media (max-width:380px){.fcbtns{grid-template-columns:1fr}}.hbar:has(.hbar-up){height:142px}.hbar-a.hbar-up{bottom:calc(76px + env(safe-area-inset-bottom,0px));background:#fff;color:#15191c;border-color:#15191c}.hbar-a.hbar-up svg{color:#c8161d}body:has(.hbar-up) #cfab{bottom:calc(142px + env(safe-area-inset-bottom,0px))}
+
+
+/* Шапка: 3 одинаковые кнопки */
+.brandline .logo{align-self:flex-start}
+.hb3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0 0}
+.hb3b{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:8px 10px;border-radius:10px;background:#c8161d;color:#fff;font:700 15px/1.15 Barlow,sans-serif;text-decoration:none;text-align:center;box-shadow:0 2px 6px rgba(200,22,29,.25)}
+.hb3b:hover{background:#a81118}
+.hb3b svg{width:20px;height:20px;flex:none}
+.hb3b .ls{display:none}
+@media(max-width:620px){.hb3b .lf{display:none}.hb3b .ls{display:inline}.hb3b{font-size:14px;padding:8px 6px;gap:6px}.hb3b svg{width:18px;height:18px}}
+/* Баннер */
+.hban{position:relative;overflow:hidden;border-radius:12px;background:#0d1013;min-height:200px;margin:0 0 10px;display:flex;align-items:center}
+.hban .hcar{position:absolute;right:0;top:0;height:100%;width:62%;object-fit:cover;object-position:30% 50%;display:block;border-radius:0}
+.hban:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0d1013 0%,#0d1013 40%,rgba(13,16,19,.8) 58%,rgba(13,16,19,.15) 85%)}
+.hbt{position:relative;z-index:1;padding:16px 16px 14px;max-width:640px}
+.htag{display:inline-block;background:#c8161d;color:#fff;font:italic 800 18px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.5px;padding:6px 14px 6px 10px;transform:skewX(-12deg);margin-left:4px}
+.hh{margin:8px 0 6px;color:#fff;font:italic 800 24px/1.05 "Barlow Condensed","Arial Narrow",sans-serif;text-shadow:0 2px 8px rgba(0,0,0,.6);max-width:430px}
+.hh em{color:#ffc400;font-style:italic}
+.hsub{margin:0 0 12px;color:#e8e8e8;font:italic 600 14px/1.25 Barlow,sans-serif;border-left:3px solid #ffc400;padding-left:8px}
+.hbr{display:flex;flex-wrap:wrap;gap:6px}
+.hbr a{background:#fff;color:#15191c;border-radius:999px;padding:5px 12px;font:800 13px/1.1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.3px;text-decoration:none;box-shadow:0 1px 4px rgba(0,0,0,.35)}
+.hbr a:hover{background:#ffc400}
+@media(min-width:760px){.hban{min-height:220px}.hh{font-size:34px;max-width:620px}.hsub{font-size:17px}.htag{font-size:24px}.hbt{padding:24px 28px}.hbr a{font-size:16px;padding:7px 16px}}
+.hero .perks{margin:0 0 10px}
+/* Плашки разделов */
+.grid.pls{gap:10px}
+.tile.pl{position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;text-align:left;gap:6px;min-height:128px;padding:12px 12px 12px;border:0;border-radius:12px;color:#fff;background:linear-gradient(135deg,#2b3136 0%,#15191c 60%,#0d1013 100%);overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.18)}
+.tile.pl .tic{position:absolute;right:-10px;bottom:-10px;width:92px;height:92px;opacity:.95;border-radius:50%}
+.tile.pl .tt{align-items:flex-start;position:relative;z-index:1;color:#fff;height:100%;width:100%}
+.tile.pl b{color:#fff;font:italic 800 18px/1.05 "Barlow Condensed","Arial Narrow",sans-serif;max-width:100%;overflow-wrap:normal;word-break:normal;hyphens:manual}
+.tile.pl .tt span{color:#b9c0c6;font-size:13px;margin-top:3px}
+.tile.pl .tt span.go{margin-top:auto;padding-top:10px}
+.tile.pl .go{display:inline-block;background:#ffc400;color:#15191c!important;font:700 13px/1 Barlow,sans-serif!important;padding:8px 12px!important;border-radius:999px;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.tile.pl:hover .go{background:#ffd640}
+@media(min-width:760px){.tile.pl{min-height:150px;padding:18px}.tile.pl b{font-size:24px}.tile.pl .tic{width:120px;height:120px}}
