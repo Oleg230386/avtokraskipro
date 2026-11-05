@@ -136,7 +136,7 @@ LD_HOME = {
 }
 
 import hashlib
-APP_JS = open(B + '/app.js', encoding='utf8').read() + '\n' + open(B + '/cart.js', encoding='utf8').read()  # сайт + корзина
+APP_JS = open(B + '/app.js', encoding='utf8').read() + '\n' + open(B + '/cart.js', encoding='utf8').read() + '\n' + open(B + '/gal.js', encoding='utf8').read()  # сайт + корзина + галерея фото
 APP_JS_VER = hashlib.md5((CSS + APP_JS).encode('utf8')).hexdigest()[:8]  # меняется при любой правке оформления/скрипта — телефоны сразу берут новое
 
 def page(pid, title_t, body):
