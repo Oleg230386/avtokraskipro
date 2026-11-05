@@ -2,11 +2,12 @@
 # Пересобирает сайт и публикует его в ветку deploy (её забирает Plesk в httpdocs).
 set -e
 cd "$(dirname "$0")"
+python3 build/wm.py   # водяной знак на новые фото
 python3 build/draft.py
 python3 build/gen.py
 # черновик (site/) хранится в main — сохранить его, если изменился
-if ! git diff --quiet -- site; then
-  git add site && git commit -q -m "Черновик: ${1:-обновление}" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" && git push -q origin main
+if ! git diff --quiet -- site build/wm_done.json || [ -n "$(git status --porcelain -- build/wm_done.json)" ]; then
+  git add site build/wm_done.json && git commit -q -m "Черновик: ${1:-обновление}" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" && git push -q origin main
 fi
 rm -rf .deploy && git worktree prune
 git fetch -q origin deploy 2>/dev/null && git worktree add -q .deploy origin/deploy -B deploy || git worktree add -q --orphan -b deploy .deploy
