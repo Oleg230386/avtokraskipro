@@ -1,5 +1,16 @@
 import json, re, os, io, base64, html, shutil, glob, urllib.parse, datetime
 
+# Google Analytics (счётчик посещаемости) + события-заявки: WhatsApp, корзина
+GA_ID = 'G-YW5ERFQ46T'
+GA = ('<script async src="https://www.googletagmanager.com/gtag/js?id=%s"></script>'
+      '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config","%s");'
+      'document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest("a,button");if(!t)return;'
+      'var h=t.getAttribute("href")||"",n;'
+      'if(t.id==="csend")n="cart_send";else if(t.classList.contains("cadd"))n="add_to_cart_click";'
+      'else if(/wa\\.me|whatsapp/i.test(h))n=/77074231516/.test(h)?"colorist_click":"whatsapp_click";'
+      'else if(/^tel:/.test(h))n="phone_click";else if(/instagram\\.com/.test(h))n="instagram_click";'
+      'if(n)gtag("event",n,{link_url:h,page_path:location.pathname})},true);</script>') % (GA_ID, GA_ID)
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = os.path.join(ROOT, 'site')
 B = os.path.join(ROOT, 'build')
@@ -189,7 +200,7 @@ def page(pid, title_t, body):
     hsc = ''
     if hs_cards:
         hsc = '<script>window.HSC=%s;</script>' % json.dumps({str(k): v for k, v in hs_cards.items()}, ensure_ascii=False).replace('</', '<\\/')
-    doc = ('<!DOCTYPE html>\n<html lang="ru"><head><meta charset="utf-8">'
+    doc = ('<!DOCTYPE html>\n<html lang="ru"><head><meta charset="utf-8">' + GA +
            '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">'
            '<title>%s</title><meta name="description" content="%s"><link rel="canonical" href="%s">'
            '<meta property="og:type" content="website"><meta property="og:site_name" content="Avtokraski_Pro">'
