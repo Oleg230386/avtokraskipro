@@ -86,6 +86,11 @@ def imgs(s, eager=()):
 CSS = ''
 h = open(SITE + '/index.html', encoding='utf8').read()
 CSS = '\n'.join(re.findall(r'<style>(.*?)</style>', h[:h.find('<script>var D=')], re.S))
+PP_CSS = ''.join(r.replace('#pv .pvw', '.pp.pvw').replace('#pv ', '.pp ') for r in re.findall(r'#pv [^{}]*\{[^}]*\}', CSS))
+PP_CSS += ('.pp.pvw{padding-top:4px}.pp .pvb{text-decoration:none}.pp .gal{margin:0 0 4px}.pp .gal .gtr{border-radius:8px;border:1px solid var(--line,#ddd);background:#fff}'
+           '.pp .gal .gtr>img{display:block;width:100%;max-height:70vh;aspect-ratio:1;object-fit:contain;background:#fff}.pp .gal .ga{width:42px;height:42px;font-size:28px}'
+           '.pp .cbx{margin:0 0 10px}.pp .cadd{font-size:17px;min-height:48px}.pp .cstep{min-height:48px}.card h2 a.pl{color:inherit;text-decoration:none}')
+CSS += '\n' + PP_CSS
 open(OUT + '/assets/site.css', 'w', encoding='utf8').write(CSS)
 
 # ---------- home slider ----------
@@ -163,7 +168,7 @@ def page(pid, title_t, body):
     def fill(m):
         ids = [int(x) for x in m.group(2).split(',') if x]
         return m.group(1) + ''.join(card_html(CD[i]) for i in ids) + '</main>'
-    body = re.sub(r'(<main class="grid" data-c="([0-9,]*)">)</main>', lambda m: m.group(1).replace(' data-c="%s"' % m.group(2), '') + ''.join(card_html(CD[int(i)]) for i in m.group(2).split(',') if i) + '</main>', body)
+    body = re.sub(r'(<main class="grid" data-c="([0-9,]*)">)</main>', lambda m: m.group(1).replace(' data-c="%s"' % m.group(2), '') + ''.join(card_html(CD[int(i)], int(i)) for i in m.group(2).split(',') if i) + '</main>', body)
     if 'id="hs"' in body:
         sh, hs_cards = slider()
         body = body.replace('<div class="hs" id="hs" aria-roledescription="carousel" aria-label="Популярные товары"></div>',
@@ -219,10 +224,156 @@ def page(pid, title_t, body):
     open(p + 'index.html', 'w', encoding='utf8').write(doc)
     return path_of(pid)
 
+
+# ---------- страницы товаров /tovar/<slug>/ ----------
+PP_SECTIONS = ('grunty',)  # разделы, для которых делаются отдельные страницы товаров (проба)
+TR = dict(zip('абвгдеёжзийклмнопрстуфхцчшщъыьэюя', ['a','b','v','g','d','e','e','zh','z','i','j','k','l','m','n','o','p','r','s','t','u','f','h','c','ch','sh','sch','','y','','e','yu','ya']))
+def slugify(t):
+    t = t.lower()
+    t = ''.join(TR.get(ch, ch) for ch in t)
+    t = re.sub(r'[^a-z0-9]+', '-', t).strip('-')
+    if len(t) > 70:
+        t = t[:70].rsplit('-', 1)[0]
+    return t or 'tovar'
+
+TPL = {m.group(1): (m.group(2), m.group(3)) for m in re.finditer(r'<template data-p="([^"]*)" data-t="([^"]*)">(.*?)</template>', T, re.S)}
+def tpl_ids(pid):
+    m = re.search(r'data-c="([0-9,]*)"', TPL[pid][1]) if pid in TPL else None
+    return [int(x) for x in m.group(1).split(',') if x] if m else []
+def tpl_h1(pid):
+    m = re.search(r'<h1[^>]*>(.*?)</h1>', TPL[pid][1], re.S)
+    return strip_tags(m.group(1)).strip() if m else pid
+
+def card_key(c):
+    h2 = re.search(r'<h2>(.*?)</h2>', c, re.S).group(1)
+    pr = (re.search(r'class="price">(.*?)</div>', c) or [None, ''])[1]
+    return h2 + '|' + pr
+
+PP = {}        # card index -> slug
+PP_HOME = {}   # slug -> (card index, [(pid, name), ...] breadcrumbs)
+_used = {}
+for sec in PP_SECTIONS:
+    subs = [p for p in TPL if p.startswith(sec + '.')]
+    for i in tpl_ids(sec):
+        c = CD[i]
+        if not c:
+            continue
+        k = card_key(c)
+        if k in _used:
+            PP[i] = _used[k]; continue
+        t = strip_tags(re.search(r'<h2>(.*?)</h2>', c, re.S).group(1))
+        sl = slugify(t); base = sl; n = 2
+        while sl in PP_HOME:
+            sl = '%s-%d' % (base, n); n += 1
+        sub = next((p for p in subs if i in tpl_ids(p)), None)
+        crumbs = [(sec, tpl_h1(sec))] + ([(sub, tpl_h1(sub))] if sub else [])
+        PP[i] = sl; _used[k] = sl; PP_HOME[sl] = (i, crumbs)
+# та же карточка в других разделах тоже ведёт на страницу товара
+for i, c in enumerate(CD):
+    if c and i not in PP and card_key(c) in _used:
+        PP[i] = _used[card_key(c)]
+
+_card_html0 = card_html
+def card_html(c, _i=None):
+    c = _card_html0(c)
+    if _i is not None and _i in PP:
+        c = re.sub(r'<h2>(.*?)</h2>', lambda m: '<h2><a class="pl" href="/tovar/%s/">%s</a></h2>' % (PP[_i], m.group(1)), c, count=1, flags=re.S)
+    return c
+
+def _price_num(pr):
+    d = re.sub(r'[^0-9]', '', pr)
+    return d if d and d != '0' else None
+
+def product_page(sl):
+    i, crumbs = PP_HOME[sl]
+    c = _card_html0(CD[i])
+    g = lambda r: (re.search(r, c, re.S) or [None, ''])[1]
+    ti = strip_tags(g(r'<h2>(.*?)</h2>')).strip()
+    cat = strip_tags(g(r'<div class="top">(.*?)</div>')).strip()
+    me = strip_tags(g(r'<p class="meta">(.*?)</p>')).strip()
+    sb = strip_tags(g(r'<p class="sub">(.*?)</p>')).strip()
+    ds = strip_tags(g(r'<p class="desc">(.*?)</p>')).strip()
+    pr_html = g(r'<div class="price">(.*?)</div>')
+    pr = strip_tags(pr_html).strip()
+    wa_href = g(r'<a class="btn wa" href="([^"]+)"')
+    km = re.search(r'Код:\s*(.*?)(?:\.\s*Фасовка:|\.?$)', sb); fm = re.search(r'Фасовка:\s*(.*)$', sb)
+    code = km.group(1).strip() if km else ''
+    brand = me.split(' · ')[0].strip() if me else ''
+    e = html.escape
+    rows = ''
+    if me: rows += '<dt>Бренд / серия</dt><dd>%s</dd>' % e(me)
+    if cat: rows += '<dt>Раздел</dt><dd>%s</dd>' % e(cat)
+    if km: rows += '<dt>Код товара</dt><dd>%s</dd>' % e(code)
+    if fm: rows += '<dt>Фасовка</dt><dd>%s</dd>' % e(fm.group(1).strip())
+    # фото: галерея или одно фото
+    gal = re.search(r'<div class="gal">.*?</button></div>', c, re.S)
+    imgs_k = re.findall(r'src="/img/([\w\-]+)\.webp"', gal.group(0) if gal else g(r'(<img class="ph"[^>]*>)'))
+    if gal:
+        ph = re.sub(r'<img class="ph" ', '<img ', gal.group(0)).replace(' loading="lazy"', '')
+    elif imgs_k:
+        ph = '<img class="pvi" src="/img/%s.webp" alt="%s" width="600" height="600">' % (imgs_k[0], e(ti))
+    else:
+        ph = '<div class="pvn">Фото товара скоро появится</div>'
+    back = crumbs[-1][0]
+    bc = '<nav class="bc" aria-label="Путь"><a href="/">Главная</a>' + ''.join(' / <a href="%s">%s</a>' % (path_of(p), e(n)) for p, n in crumbs) + ' / ' + e(ti) + '</nav>'
+    body = ('<div class="top-nav brandline"><a class="logo" href="/" aria-label="Avtokraski_Pro — на главную"><img data-img="logo" class="limg" alt="Avtokraski_Pro" width="220" height="56"></a></div>'
+            + re.search(r'<div class="hb3">.*?</div>', TPL[crumbs[0][0]][1], re.S).group(0)
+            + '<div data-nav="%s"></div>' % crumbs[0][0] + bc
+            + '<div class="pvw pp"><a class="pvb" href="%s">← Назад к разделу «%s»</a>' % (path_of(back), e(crumbs[-1][1])) + ph
+            + '<div class="pvc">%s</div><h1>%s</h1>' % (e(cat), e(ti)) + ('<dl>%s</dl>' % rows if rows else '')
+            + '<h3>Описание</h3>' + ('<p class="pvd">%s</p>' % e(ds) if ds else '<p class="pvd none">Подробное описание, применение и совместимость уточняйте у менеджера в WhatsApp.</p>')
+            + ('<div class="price">%s</div>' % pr_html if pr_html else '')
+            + ('<a class="btn" href="%s" target="_blank" rel="noopener">Узнать цену и наличие</a>' % wa_href if wa_href else '')
+            + '</div><footer data-f></footer>')
+    def navr(m):
+        cc = m.group(1)
+        return NAV.replace('href="#%s">' % cc, 'href="#%s" aria-current="page">' % cc)
+    body = re.sub(r'<div data-nav="([^"]*)"></div>', navr, body)
+    body = body.replace('<footer data-f></footer>', '<footer>' + FOOT + '</footer>')
+    body = imgs(body, eager=('logo',))
+    body = fix_links(body)
+    url = DOMAIN + '/tovar/%s/' % sl
+    pn = _price_num(pr)
+    sti = ti if (not brand or brand.lower() in ti.lower()) else brand + ' ' + ti
+    title = '%s — купить в Астане%s | Avtokraski_Pro' % (sti, (', цена %s' % pr) if pn else '')
+    dsc = (ds.replace('\n', ' ')[:150].rsplit(' ', 1)[0] + '…') if len(ds) > 155 else ds
+    desc = '%s%s. %sКупить в Астане, доставка по Казахстану и СНГ. Наличие — в WhatsApp.' % (sti, (' — ' + pr) if pn else '', (dsc + ' ') if dsc else '')
+    img_url = DOMAIN + ('/img/%s.webp' % imgs_k[0] if imgs_k else '/img/logo.webp')
+    prod = {"@context": "https://schema.org", "@type": "Product", "name": ti, "image": [DOMAIN + '/img/%s.webp' % k for k in imgs_k] or [img_url], "url": url}
+    if ds: prod["description"] = ds[:1000]
+    if code: prod["sku"] = code
+    if brand: prod["brand"] = {"@type": "Brand", "name": brand}
+    if pn: prod["offers"] = {"@type": "Offer", "price": pn, "priceCurrency": "KZT", "url": url, "availability": "https://schema.org/InStock", "seller": {"@type": "Organization", "name": "Avtokraski_Pro"}}
+    items = [{"@type": "ListItem", "position": 1, "name": "Главная", "item": DOMAIN + "/"}]
+    for p_, n_ in crumbs:
+        items.append({"@type": "ListItem", "position": len(items) + 1, "name": n_, "item": DOMAIN + path_of(p_)})
+    items.append({"@type": "ListItem", "position": len(items) + 1, "name": ti, "item": url})
+    ld = '<script type="application/ld+json">%s</script><script type="application/ld+json">%s</script>' % (
+        json.dumps(prod, ensure_ascii=False).replace('</', '<\\/'),
+        json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": items}, ensure_ascii=False))
+    doc = ('<!DOCTYPE html>\n<html lang="ru"><head><meta charset="utf-8">' + GA +
+           '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">'
+           '<title>%s</title><meta name="description" content="%s"><link rel="canonical" href="%s">'
+           '<meta property="og:type" content="product"><meta property="og:site_name" content="Avtokraski_Pro">'
+           '<meta property="og:title" content="%s"><meta property="og:description" content="%s"><meta property="og:url" content="%s">'
+           '<meta property="og:image" content="%s"><meta property="og:locale" content="ru_RU">'
+           '<link rel="icon" href="/img/ig-av.webp" type="image/webp"><meta name="theme-color" content="#c8161d">'
+           '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+           '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" media="print" onload="this.media=\'all\'">'
+           '<link rel="stylesheet" href="/assets/site.css?v=%s">%s</head><body>\n<div id="app" class="pg">%s</div>'
+           '<script src="/assets/app.js?v=%s" defer></script></body></html>\n') % (
+        e(title), e(desc), url, e(title), e(desc), url, img_url, APP_JS_VER, ld, body, APP_JS_VER)
+    doc = re.sub(r'(/img/([\w\-]+)\.webp)"', lambda m: m.group(1) + ('?v=' + IV[m.group(2)] if m.group(2) in IV else '') + '"', doc)
+    d = OUT + '/tovar/%s/' % sl
+    os.makedirs(d, exist_ok=True)
+    open(d + 'index.html', 'w', encoding='utf8').write(doc)
+    return '/tovar/%s/' % sl
+
 paths = []
 for m in re.finditer(r'<template data-p="([^"]*)" data-t="([^"]*)">(.*?)</template>', T, re.S):
     paths.append(page(m.group(1), m.group(2), m.group(3)))
-print('pages', len(paths))
+ppaths = [product_page(sl) for sl in PP_HOME]
+print('pages', len(paths), 'products', len(ppaths))
 
 # ---------- cards.js for global search ----------
 js = open(SITE + '/app.txt', encoding='utf8').read().split('\x00', 1)[1]
@@ -235,6 +386,8 @@ sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitem
 for p in paths:
     pr = '1.0' if p == '/' else ('0.8' if p.count('/') == 2 else '0.6')
     sm.append('<url><loc>%s%s</loc><lastmod>%s</lastmod><priority>%s</priority></url>' % (DOMAIN, p, today, pr))
+for p in ppaths:
+    sm.append('<url><loc>%s%s</loc><lastmod>%s</lastmod><priority>0.5</priority></url>' % (DOMAIN, p, today))
 sm.append('</urlset>')
 open(OUT + '/sitemap.xml', 'w').write('\n'.join(sm) + '\n')
 open(OUT + '/robots.txt', 'w').write('User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\nHost: %s\n' % (DOMAIN, DOMAIN))
