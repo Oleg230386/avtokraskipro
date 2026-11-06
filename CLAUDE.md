@@ -20,7 +20,8 @@
 2. `./publish.sh "что изменилось"` — пересобирает и пушит ветку `deploy`.
 3. GitHub веб-хук → Plesk (ps.kz, srv-plesk51) сам выкладывает `deploy` в `httpdocs` за несколько секунд.
 4. Черновик: после publish.sh опубликовать в артефакт (slug ab237508-29eb-4aee-84cd-ed9e7d77a943, ссылка N8i7khiEpPLKnwznyXTPRC; base_version брать из get_artifact) изменённые файлы из `site/` (publish_files, режим patch: index.html, app.txt, новые/изменённые img/*.json). Владелец хочет, чтобы черновик всегда совпадал с сайтом.
-5. Проверка: `curl https://avtokraskipro.kz/version.txt` — дата сборки должна быть новой; проверить саму правку на живом сайте.
+5. Новые страницы → `python3 build/indexnow.py` (сообщает Яндексу и Bing все адреса из sitemap).
+6. Проверка: `curl https://avtokraskipro.kz/version.txt` — дата сборки должна быть новой; проверить саму правку на живом сайте.
 Ветку `main` в Plesk не выкладывать. Настройки GitHub из сессии менять нельзя (прокси запрещает) — веб-хук и т.п. делает владелец.
 
 ## Правила
