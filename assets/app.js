@@ -117,7 +117,7 @@ var WI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=
 function fromCard(c){var t=(c.querySelector("h2")||{}).textContent||"",sb=(c.querySelector(".sub")||{}).textContent||"",pr=(c.querySelector(".price")||{}).textContent||"",im=c.querySelector("img.ph"),
 km=sb.match(/Код:\s*(.*?)(?:\.\s*Фасовка:|\.?$)/),fm=sb.match(/Фасовка:\s*(.*)$/);return mk(t,km?km[1].trim():"",fm?fm[1].trim():"",pr,im?(im.getAttribute("src")||""):"")}
 function fromPv(pv){var t=(pv.querySelector("h1")||{}).textContent||"",cd="",pk="",dts=pv.querySelectorAll(".pvw > dl dt");[].forEach.call(dts,function(d){var v=d.nextElementSibling?d.nextElementSibling.textContent:"";if(d.textContent==="Код товара")cd=v;if(d.textContent==="Фасовка")pk=v});
-var pr=pv.querySelector(".pvw > .price"),im=pv.querySelector(".pvi");return mk(t,cd,pk,pr?pr.textContent:"",im?im.getAttribute("src"):"")}
+var pr=pv.querySelector(".pvw > .price"),im=pv.querySelector(".pvi")||pv.querySelector(".gal img");return mk(t,cd,pk,pr?pr.textContent:"",im?im.getAttribute("src"):"")}
 function mk(t,cd,pk,pr,img){t=t.trim();pr=pr.replace(/\s+/g," ").trim();return{k:t+"|"+pk,t:t,c:cd,f:pk,p:pr,v:num(pr),i:img&&img.indexOf("data:")!==0?img.split("?")[0]:"",q:1}}
 
 /* ---- кнопки на карточках ---- */
@@ -127,6 +127,7 @@ function paintAll(){[].forEach.call(document.querySelectorAll(".cbx"),function(b
 function decorate(root){if(!root.querySelectorAll)return;var cs=root.matches&&root.matches(".card")?[root]:root.querySelectorAll(".card");[].forEach.call(cs,function(c){if(c.querySelector(".cbx")||!c.querySelector("h2"))return;var b=ctl(fromCard(c)),wa=c.querySelector("a.wa");if(wa)c.insertBefore(b,wa);else c.appendChild(b)})}
 function decoratePv(){var pv=document.getElementById("pv");if(!pv||pv.hidden)return;var w=pv.querySelector(".pvw");if(!w||w.querySelector(".cbx")||!w.querySelector("h1"))return;var b=ctl(fromPv(pv));b._pv=1;paint(b);var btns=w.querySelectorAll(":scope > a.btn:not(.doc)"),wa=btns.length?btns[btns.length-1]:null;if(wa)w.insertBefore(b,wa);else w.appendChild(b)}
 
+function decoratePp(){var w=document.querySelector(".pvw.pp");if(!w||w.querySelector(".cbx")||!w.querySelector("h1"))return;var b=ctl(fromPv(w));b._pv=1;paint(b);var btns=w.querySelectorAll(":scope > a.btn:not(.doc)"),wa=btns.length?btns[btns.length-1]:null;if(wa)w.insertBefore(b,wa);else w.appendChild(b)}
 function setQ(item,d){var x=find(item.k);if(!x){if(d<=0)return;x={};for(var p in item)x[p]=item[p];x.q=0;CART.push(x)}x.q+=d;if(x.q<=0)CART=CART.filter(function(y){return y.k!==item.k});save(CART);paintAll();if(!cv.hidden)render()}
 
 /* ---- плавающая кнопка и подсказка ---- */
@@ -168,7 +169,7 @@ window.addEventListener("storage",function(e){if(e.key===KEY){CART=load();paintA
 window.addEventListener("pageshow",function(){CART=load();paintAll()});
 
 /* ---- следим за новыми карточками (смена раздела, поиск, окно товара) ---- */
-decorate(document);fab();
+decorate(document);decoratePp();fab();
 new MutationObserver(function(ms){var pvc=false;ms.forEach(function(m){if(m.target&&m.target.id==="pv")pvc=true;[].forEach.call(m.addedNodes,function(n){if(n.nodeType===1&&!(n.closest&&n.closest("#pv,#cv")))decorate(n)})});if(pvc)decoratePv()}).observe(document.body,{childList:true,subtree:true});
 })();
 
