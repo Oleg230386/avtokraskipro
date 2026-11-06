@@ -88,7 +88,7 @@ h = open(SITE + '/index.html', encoding='utf8').read()
 CSS = '\n'.join(re.findall(r'<style>(.*?)</style>', h[:h.find('<script>var D=')], re.S))
 PP_CSS = ''.join(r.replace('#pv .pvw', '.pp.pvw').replace('#pv ', '.pp ') for r in re.findall(r'#pv [^{}]*\{[^}]*\}', CSS))
 PP_CSS += ('.pp.pvw{padding-top:4px}.pp .pvb{text-decoration:none}.pp .gal{margin:0 0 4px}.pp .gal .gtr{border-radius:8px;border:1px solid var(--line,#ddd);background:#fff}'
-           '.pp .gal .gtr>img{display:block;width:100%;max-height:70vh;aspect-ratio:1;object-fit:contain;background:#fff}.pp .gal .ga{width:42px;height:42px;font-size:28px}'
+           '.pp .gal .gtr>img{display:block;width:100%;height:auto;max-height:70vh;aspect-ratio:1;object-fit:contain;background:#fff}.pp .pvi{height:auto}.pp .gal .ga{width:42px;height:42px;font-size:28px}'
            '.pp .cbx{margin:0 0 10px}.pp .cadd{font-size:17px;min-height:48px}.pp .cstep{min-height:48px}.card h2 a.pl{color:inherit;text-decoration:none}')
 CSS += '\n' + PP_CSS
 open(OUT + '/assets/site.css', 'w', encoding='utf8').write(CSS)
@@ -226,7 +226,7 @@ def page(pid, title_t, body):
 
 
 # ---------- страницы товаров /tovar/<slug>/ ----------
-PP_SECTIONS = ('grunty',)  # разделы, для которых делаются отдельные страницы товаров (проба)
+PP_SECTIONS = ('laki', 'grunty', 'aerozoli', 'shpatlevki', 'otverditeli', 'abrazivy', 'lenty', 'raspyliteli', 'avtohimiya', 'oborudovanie', 'prochee')  # разделы, для которых делаются отдельные страницы товаров
 TR = dict(zip('абвгдеёжзийклмнопрстуфхцчшщъыьэюя', ['a','b','v','g','d','e','e','zh','z','i','j','k','l','m','n','o','p','r','s','t','u','f','h','c','ch','sh','sch','','y','','e','yu','ya']))
 def slugify(t):
     t = t.lower()
@@ -238,8 +238,8 @@ def slugify(t):
 
 TPL = {m.group(1): (m.group(2), m.group(3)) for m in re.finditer(r'<template data-p="([^"]*)" data-t="([^"]*)">(.*?)</template>', T, re.S)}
 def tpl_ids(pid):
-    m = re.search(r'data-c="([0-9,]*)"', TPL[pid][1]) if pid in TPL else None
-    return [int(x) for x in m.group(1).split(',') if x] if m else []
+    if pid not in TPL: return []
+    return [int(x) for l in re.findall(r'data-c="([0-9,]*)"', TPL[pid][1]) for x in l.split(',') if x]
 def tpl_h1(pid):
     m = re.search(r'<h1[^>]*>(.*?)</h1>', TPL[pid][1], re.S)
     return strip_tags(m.group(1)).strip() if m else pid
@@ -254,7 +254,11 @@ PP_HOME = {}   # slug -> (card index, [(pid, name), ...] breadcrumbs)
 _used = {}
 for sec in PP_SECTIONS:
     subs = [p for p in TPL if p.startswith(sec + '.')]
-    for i in tpl_ids(sec):
+    _all = []
+    for p_ in [sec] + subs:
+        for i in tpl_ids(p_):
+            if i not in _all: _all.append(i)
+    for i in _all:
         c = CD[i]
         if not c:
             continue
@@ -262,10 +266,15 @@ for sec in PP_SECTIONS:
         if k in _used:
             PP[i] = _used[k]; continue
         t = strip_tags(re.search(r'<h2>(.*?)</h2>', c, re.S).group(1))
-        sl = slugify(t); base = sl; n = 2
+        sl = slugify(t)
+        if sl in PP_HOME:  # то же название, другая фасовка — добавить фасовку в адрес
+            fm_ = re.search(r'Фасовка:\s*(.*?)</p>', c)
+            if fm_: sl = sl + '-' + slugify(strip_tags(fm_.group(1)))
+        base = sl; n = 2
         while sl in PP_HOME:
             sl = '%s-%d' % (base, n); n += 1
-        sub = next((p for p in subs if i in tpl_ids(p)), None)
+        _c = [p for p in subs if i in tpl_ids(p)]
+        sub = min(_c, key=lambda p: len(tpl_ids(p))) if _c else None  # самый точный подраздел
         crumbs = [(sec, tpl_h1(sec))] + ([(sub, tpl_h1(sub))] if sub else [])
         PP[i] = sl; _used[k] = sl; PP_HOME[sl] = (i, crumbs)
 # та же карточка в других разделах тоже ведёт на страницу товара
@@ -298,6 +307,8 @@ def product_page(sl):
     wa_href = g(r'<a class="btn wa" href="([^"]+)"')
     km = re.search(r'Код:\s*(.*?)(?:\.\s*Фасовка:|\.?$)', sb); fm = re.search(r'Фасовка:\s*(.*)$', sb)
     code = km.group(1).strip() if km else ''
+    if code and not re.search(r'[0-9A-Za-zА-Яа-я]', code):
+        code = ''; km = None  # код скрыт звёздочками — не показывать
     brand = me.split(' · ')[0].strip() if me else ''
     e = html.escape
     rows = ''
