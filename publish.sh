@@ -3,6 +3,7 @@
 set -e
 cd "$(dirname "$0")"
 python3 build/wm.py   # водяной знак на новые фото
+python3 build/recount.py   # пересчёт счётчиков товаров на кнопках разделов
 python3 build/draft.py
 python3 build/gen.py
 # черновик (site/) хранится в main — сохранить его, если изменился
