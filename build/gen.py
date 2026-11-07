@@ -266,7 +266,7 @@ for sec in PP_SECTIONS:
         if k in _used:
             PP[i] = _used[k]; continue
         t = strip_tags(re.search(r'<h2>(.*?)</h2>', c, re.S).group(1))
-        sl = slugify(t)
+        sl = slugify(t.replace(' (мирлон)', ''))  # «(мирлон)» в названии не меняет адрес страницы
         if sl in PP_HOME:  # то же название, другая фасовка — добавить фасовку в адрес
             fm_ = re.search(r'Фасовка:\s*(.*?)</p>', c)
             if fm_: sl = sl + '-' + slugify(strip_tags(fm_.group(1)))
