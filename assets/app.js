@@ -20,7 +20,7 @@ var x0=null;el.addEventListener("touchstart",function(e){x0=e.touches[0].clientX
 window.addEventListener("resize",function(){if(document.body.contains(el))go(cur)});
 function more(it){var w=document.createElement("div");w.innerHTML=(window.HSC||{})[it.getAttribute("data-i")]||"";if(!w.firstChild)return;var c=w.firstChild,sb=c.querySelector(".sub"),t=c.querySelector("h2").textContent,km=sb?sb.textContent.match(/^Код: (.*?)(?:\. Фасовка:.*)?$/):null,cd=km?km[1]:"",nm=cd&&t.indexOf(cd+" · ")===0?t.slice(cd.length+3):t,wa=c.querySelector("a.wa");
 if(wa)wa.setAttribute("href",u("Здравствуйте! Интересует товар: "+nm+(cd?" (код "+cd+")":"")+". Подскажите цену и наличие."));var a=it.querySelector("img"),b=c.querySelector("img.ph");if(a&&b&&a.getAttribute("src"))b.setAttribute("src",a.getAttribute("src"));if(window.openP)window.openP(c)}
-[].forEach.call(IT,function(it){it.addEventListener("click",function(){more(it)});it.addEventListener("keydown",function(e){if(e.key==="Enter")more(it)})});
+[].forEach.call(IT,function(it){it.addEventListener("click",function(e){if(e.target.closest("a.pl"))return;e.preventDefault();more(it)});it.addEventListener("keydown",function(e){if(e.key==="Enter")more(it)})});
 go(0);if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches){paused=true;run()}}
 
 initHS();
