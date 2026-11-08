@@ -109,8 +109,11 @@ def slider():
         if not m: continue
         alt = t.group(1) if t else ''
         src = ('src="/img/%s.webp"' % m.group(1)) if n < 4 else ('data-img="%s"' % m.group(1))
-        h += '<div class="hs-it" data-i="%d" role="button" tabindex="0" aria-label="%s"><img %s alt="%s" width="300" height="300"></div>' % (i, alt, src, alt)
-        cards[i] = card_html(CD[i])
+        im = '<img %s alt="%s" width="300" height="300">' % (src, alt)
+        if i in PP:  # настоящая ссылка на страницу товара (для поиска); клик по-прежнему открывает окно
+            im = '<a class="hs-a" href="/tovar/%s/" tabindex="-1" style="display:block">%s</a>' % (PP[i], im)
+        h += '<div class="hs-it" data-i="%d" role="button" tabindex="0" aria-label="%s">%s</div>' % (i, alt, im)
+        cards[i] = card_html(CD[i], i)
     h += ('</div></div><div class="hs-nav"><button type="button" class="hs-prev" aria-label="Назад">‹</button>'
           '<button type="button" class="hs-next" aria-label="Вперёд">›</button></div><div class="hs-bar"></div>')
     return h, cards
