@@ -229,7 +229,7 @@ def page(pid, title_t, body):
 
 
 # ---------- страницы товаров /tovar/<slug>/ ----------
-PP_SECTIONS = ('laki', 'grunty', 'aerozoli', 'shpatlevki', 'otverditeli', 'abrazivy', 'lenty', 'raspyliteli', 'avtohimiya', 'oborudovanie', 'prochee')  # разделы, для которых делаются отдельные страницы товаров
+PP_SECTIONS = ('laki', 'grunty', 'aerozoli', 'shpatlevki', 'otverditeli', 'abrazivy', 'lenty', 'raspyliteli', 'avtohimiya', 'oborudovanie', 'prochee', 'emal')  # разделы, для которых делаются отдельные страницы товаров
 TR = dict(zip('абвгдеёжзийклмнопрстуфхцчшщъыьэюя', ['a','b','v','g','d','e','e','zh','z','i','j','k','l','m','n','o','p','r','s','t','u','f','h','c','ch','sh','sch','','y','','e','yu','ya']))
 def slugify(t):
     t = t.lower()
@@ -296,6 +296,21 @@ def _price_num(pr):
     d = re.sub(r'[^0-9]', '', pr)
     return d if d and d != '0' else None
 
+def pp_tds(code):
+    """Техническая информация + кнопка PDF на странице товара (данные — DOCS из build/app.js)."""
+    k = None
+    for d_ in PP_DOCS:
+        if code.startswith(d_): k = d_
+    if not k: return ''
+    o = PP_DOCS[k]; e = html.escape
+    h = '<div class="tds"><h3>Техническая информация</h3><p class="src">%s</p><dl>' % e(o['src'])
+    h += ''.join('<dt>%s</dt><dd>%s</dd>' % (e(a), e(b)) for a, b in o['rows']) + '</dl>'
+    if o.get('hard'):
+        h += '<table><thead><tr><th>Температура</th><th>Отвердитель</th><th>Разбавитель</th></tr></thead><tbody>' + ''.join('<tr><td>%s</td><td>%s</td><td>%s</td></tr>' % tuple(map(e, r)) for r in o['hard']) + '</tbody></table>'
+    return h + '<a class="btn doc" href="%s" target="_blank" rel="noopener">Скачать техническую карту (PDF)</a></div>' % o['pdf']
+_dj = re.search(r'var DOCS=(\{.*\});$', open(B + '/app.js', encoding='utf8').read(), re.M).group(1)
+PP_DOCS = json.loads(re.sub(r'([{,])(pdf|src|rows|hard):', r'\1"\2":', _dj))
+
 def product_page(sl):
     i, crumbs = PP_HOME[sl]
     c = _card_html0(CD[i])
@@ -336,6 +351,7 @@ def product_page(sl):
             + '<div class="pvw pp"><a class="pvb" href="%s">← Назад к разделу «%s»</a>' % (path_of(back), e(crumbs[-1][1])) + ph
             + '<div class="pvc">%s</div><h1>%s</h1>' % (e(cat), e(ti)) + ('<dl>%s</dl>' % rows if rows else '')
             + '<h3>Описание</h3>' + ('<p class="pvd">%s</p>' % e(ds) if ds else '<p class="pvd none">Подробное описание, применение и совместимость уточняйте у менеджера в WhatsApp.</p>')
+            + pp_tds(code)
             + ('<div class="price">%s</div>' % pr_html if pr_html else '')
             + ('<a class="btn" href="%s" target="_blank" rel="noopener">Узнать цену и наличие</a>' % wa_href if wa_href else '')
             + '</div><footer data-f></footer>')
@@ -440,6 +456,7 @@ shutil.copy(B + '/yandex_6d6343c53e2e252c.html', OUT + '/yandex_6d6343c53e2e252c
 open(OUT + '/assets/app.js', 'w', encoding='utf8').write(APP_JS)
 os.makedirs(OUT + '/docs', exist_ok=True)
 shutil.copy(B + '/D8125-tehkarta.pdf', OUT + '/docs/D8125-tehkarta.pdf')
+shutil.copy(B + '/emakout-7320v-tehkarta.pdf', OUT + '/docs/emakout-7320v-tehkarta.pdf')
 # IndexNow (Яндекс, Bing): файл-ключ подтверждает, что сайт наш
 INDEXNOW_KEY = 'd09dccbe98f6a96ecf6cf6003526fb14'
 open(OUT + '/%s.txt' % INDEXNOW_KEY, 'w').write(INDEXNOW_KEY)
