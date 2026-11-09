@@ -151,7 +151,7 @@ LD_HOME = {
     "@context": "https://schema.org", "@type": "AutoPartsStore", "name": "Avtokraski_Pro",
     "url": DOMAIN + "/", "logo": DOMAIN + "/img/logo.webp", "image": DOMAIN + "/img/logo.webp",
     "telephone": "+77771187355",
-    "address": {"@type": "PostalAddress", "streetAddress": "ул. Талапкерская, 24а, 204 бутик, 2 этаж",
+    "address": {"@type": "PostalAddress", "streetAddress": "ул. Талапкерская, 24а, 2 этаж",
                 "addressLocality": "Астана", "postalCode": "Z11A2Y1", "addressCountry": "KZ"},
     "areaServed": ["Казахстан"], "sameAs": ["https://www.instagram.com/avtokraski_pro/"],
     "description": "Автокраски, лаки, грунты, абразивы и оборудование для кузовного ремонта в Астане."
