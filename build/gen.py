@@ -457,6 +457,7 @@ open(OUT + '/assets/app.js', 'w', encoding='utf8').write(APP_JS)
 os.makedirs(OUT + '/docs', exist_ok=True)
 shutil.copy(B + '/D8125-tehkarta.pdf', OUT + '/docs/D8125-tehkarta.pdf')
 shutil.copy(B + '/emakout-7320v-tehkarta.pdf', OUT + '/docs/emakout-7320v-tehkarta.pdf')
+shutil.copy(B + '/emakout-5335sp-tehkarta.pdf', OUT + '/docs/emakout-5335sp-tehkarta.pdf')
 # IndexNow (Яндекс, Bing): файл-ключ подтверждает, что сайт наш
 INDEXNOW_KEY = 'd09dccbe98f6a96ecf6cf6003526fb14'
 open(OUT + '/%s.txt' % INDEXNOW_KEY, 'w').write(INDEXNOW_KEY)
