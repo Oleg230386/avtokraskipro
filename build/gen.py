@@ -458,7 +458,7 @@ os.makedirs(OUT + '/docs', exist_ok=True)
 shutil.copy(B + '/D8125-tehkarta.pdf', OUT + '/docs/D8125-tehkarta.pdf')
 shutil.copy(B + '/emakout-7320v-tehkarta.pdf', OUT + '/docs/emakout-7320v-tehkarta.pdf')
 shutil.copy(B + '/emakout-5335sp-tehkarta.pdf', OUT + '/docs/emakout-5335sp-tehkarta.pdf')
-for _f in glob.glob(B + '/docs/*.webp'):  # страницы техкарт для просмотра на сайте
+for _f in glob.glob(B + '/docs/*.webp') + glob.glob(B + '/docs/*.pdf'):  # страницы техкарт для просмотра на сайте
     shutil.copy(_f, OUT + '/docs/' + os.path.basename(_f))
 # IndexNow (Яндекс, Bing): файл-ключ подтверждает, что сайт наш
 INDEXNOW_KEY = 'd09dccbe98f6a96ecf6cf6003526fb14'
