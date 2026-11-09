@@ -105,7 +105,7 @@ def slider():
          '<b>AVTOKRASKI<span>_PRO</span></b><small>· популярные товары</small></a><div class="hs-vp"><div class="hs-tr">')
     cards = {}
     for n, i in enumerate(ids):
-        m = re.search(r'data-img="([^"]+)"', CD[i]); t = re.search(r'<h2>([\s\S]*?)</h2>', CD[i])
+        m = re.search(r'data-hs="([^"]+)"', CD[i]) or re.search(r'data-img="([^"]+)"', CD[i]); t = re.search(r'<h2>([\s\S]*?)</h2>', CD[i])  # data-hs — отдельная картинка для слайдера
         if not m: continue
         alt = t.group(1) if t else ''
         src = ('src="/img/%s.webp"' % m.group(1)) if n < 4 else ('data-img="%s"' % m.group(1))
