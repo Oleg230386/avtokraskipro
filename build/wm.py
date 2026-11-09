@@ -1,7 +1,7 @@
 """Водяной знак на фото товаров: узор из мелких полупрозрачных логотипов + уменьшение до 320 px.
 Запускается из publish.sh перед сборкой. Каждое фото помечается один раз:
 хэши уже помеченных фото хранятся в build/wm_done.json, повторно знак не ставится.
-Иконки разделов (si.json) не трогаются."""
+Иконки разделов (si.json) и картинки статей (sx-art-*.json) не трогаются."""
 import json, os, glob, io, base64, hashlib
 from PIL import Image
 
@@ -38,7 +38,7 @@ def stamp(im):
 
 n = 0
 for f in sorted(glob.glob(IMG + '/s*.json')):
-    if os.path.basename(f) in SKIP_FILES:
+    if os.path.basename(f) in SKIP_FILES or os.path.basename(f).startswith('sx-art-'):  # картинки статей — без знака и уменьшения
         continue
     J = json.load(open(f, encoding='utf8')); changed = False
     for k, v in J.items():
