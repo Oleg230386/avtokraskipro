@@ -21,7 +21,7 @@ var tr=el.querySelector(".hs-tr"),IT=el.querySelectorAll(".hs-it"),N=IT.length,c
 function vis(){var w=window.innerWidth;return w<=560?1:(w<=900?2:4)}
 function load(){var v=vis();for(var k=cur;k<cur+v*2&&k<N;k++){var im=IT[k].querySelector("img");if(im&&!im.getAttribute("src"))setImg(im)}}
 function go(k){var v=vis(),mx=Math.max(0,N-v);cur=k>mx?0:(k<0?mx:k);tr.style.transform="translateX("+(-cur*100/v)+"%)";load();run()}
-function run(){if(HST)clearTimeout(HST);bar.classList.remove("run");void bar.offsetWidth;if(paused||!document.body.contains(el))return;bar.classList.add("run");HST=setTimeout(function(){if(document.body.contains(el))go(cur+1)},4000)}
+function run(){if(HST)clearTimeout(HST);bar.classList.remove("run");void bar.offsetWidth;if(paused||!document.body.contains(el))return;bar.classList.add("run");HST=setTimeout(function(){if(document.body.contains(el))go(cur+1)},2000)}
 el.querySelector(".hs-prev").addEventListener("click",function(){go(cur-1)});el.querySelector(".hs-next").addEventListener("click",function(){go(cur+1)});
 el.addEventListener("mouseenter",function(){paused=true;run()});el.addEventListener("mouseleave",function(){paused=false;run()});
 var x0=null;el.addEventListener("touchstart",function(e){x0=e.touches[0].clientX},{passive:true});el.addEventListener("touchend",function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>40)go(cur+(dx<0?1:-1))});
