@@ -8,6 +8,7 @@ js = open(B + '/draft_app.js', encoding='utf8').read()
 J = lambda v: json.dumps(v, ensure_ascii=False)
 for k in ('IM', 'NAV', 'FOOT', 'ATT', 'TOP', 'CD'):
     js = js.replace('/*@%s@*/' % k, J(D[k]), 1)
+js = open(B + '/tdv.js', encoding='utf8').read() + '\n' + js  # просмотр техкарт — первым, чтобы «назад» закрывал техкарту, а не окно товара
 js += '\n' + open(B + '/cart.js', encoding='utf8').read()  # корзина
 js += '\n' + open(B + '/gal.js', encoding='utf8').read()  # галерея фото
 app = T + '\x00' + js

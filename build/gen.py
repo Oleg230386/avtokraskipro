@@ -155,7 +155,7 @@ LD_HOME = {
 }
 
 import hashlib
-APP_JS = open(B + '/app.js', encoding='utf8').read() + '\n' + open(B + '/cart.js', encoding='utf8').read() + '\n' + open(B + '/gal.js', encoding='utf8').read()  # сайт + корзина + галерея фото
+APP_JS = open(B + '/tdv.js', encoding='utf8').read() + '\n' + open(B + '/app.js', encoding='utf8').read() + '\n' + open(B + '/cart.js', encoding='utf8').read() + '\n' + open(B + '/gal.js', encoding='utf8').read()  # сайт + корзина + галерея фото
 APP_JS_VER = hashlib.md5((CSS + APP_JS).encode('utf8')).hexdigest()[:8]  # меняется при любой правке оформления/скрипта — телефоны сразу берут новое
 
 def page(pid, title_t, body):
@@ -307,9 +307,9 @@ def pp_tds(code):
     h += ''.join('<dt>%s</dt><dd>%s</dd>' % (e(a), e(b)) for a, b in o['rows']) + '</dl>'
     if o.get('hard'):
         h += '<table><thead><tr><th>Температура</th><th>Отвердитель</th><th>Разбавитель</th></tr></thead><tbody>' + ''.join('<tr><td>%s</td><td>%s</td><td>%s</td></tr>' % tuple(map(e, r)) for r in o['hard']) + '</tbody></table>'
-    return h + '<a class="btn doc" href="%s" target="_blank" rel="noopener">Скачать техническую карту (PDF)</a></div>' % o['pdf']
+    return h + '<a class="btn doc" href="%s" data-pg="%d" target="_blank" rel="noopener">Открыть техническую карту (PDF)</a></div>' % (o['pdf'], o.get('pg', 1))
 _dj = re.search(r'var DOCS=(\{.*\});$', open(B + '/app.js', encoding='utf8').read(), re.M).group(1)
-PP_DOCS = json.loads(re.sub(r'([{,])(pdf|src|rows|hard):', r'\1"\2":', _dj))
+PP_DOCS = json.loads(re.sub(r'([{,])(pdf|pg|src|rows|hard):', r'\1"\2":', _dj))
 
 def product_page(sl):
     i, crumbs = PP_HOME[sl]
@@ -458,6 +458,8 @@ os.makedirs(OUT + '/docs', exist_ok=True)
 shutil.copy(B + '/D8125-tehkarta.pdf', OUT + '/docs/D8125-tehkarta.pdf')
 shutil.copy(B + '/emakout-7320v-tehkarta.pdf', OUT + '/docs/emakout-7320v-tehkarta.pdf')
 shutil.copy(B + '/emakout-5335sp-tehkarta.pdf', OUT + '/docs/emakout-5335sp-tehkarta.pdf')
+for _f in glob.glob(B + '/docs/*.webp'):  # страницы техкарт для просмотра на сайте
+    shutil.copy(_f, OUT + '/docs/' + os.path.basename(_f))
 # IndexNow (Яндекс, Bing): файл-ключ подтверждает, что сайт наш
 INDEXNOW_KEY = 'd09dccbe98f6a96ecf6cf6003526fb14'
 open(OUT + '/%s.txt' % INDEXNOW_KEY, 'w').write(INDEXNOW_KEY)
