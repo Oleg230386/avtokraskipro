@@ -130,6 +130,9 @@ def meta_for(pid, h1, count, chips):
         return ('Avtokraski_Pro — автокраски, лаки, грунты и материалы для кузовного ремонта в Астане',
                 'Магазин автокрасок в Астане: лаки, грунты, шпатлёвки, абразивы, краскопульты PPG, U-POL, RANAL, Norton. '
                 'Подбор краски по коду цвета. Доставка по Казахстану и СНГ, Kaspi Red и рассрочка.')
+    if pid == 'o-kompanii':
+        return ('О компании Avtokraski_Pro — автокраски и материалы для кузовного ремонта в Астане',
+                'Avtokraski_Pro — магазин автокрасок в Астане: более 1000 позиций PPG, U-POL, RANAL, Norton, RUPES. Официальный дистрибьютор, подбор краски по коду, доставка по Казахстану и СНГ.')
     brands = ', '.join(chips[:5])
     if pid.startswith('brand-'):
         secs = ', '.join(c.lower() for c in chips[:4])
