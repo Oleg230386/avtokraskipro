@@ -232,7 +232,7 @@ def page(pid, title_t, body):
 
 
 # ---------- страницы товаров /tovar/<slug>/ ----------
-PP_SECTIONS = ('laki', 'grunty', 'aerozoli', 'shpatlevki', 'otverditeli', 'abrazivy', 'lenty', 'raspyliteli', 'avtohimiya', 'oborudovanie', 'prochee', 'emal')  # разделы, для которых делаются отдельные страницы товаров
+PP_SECTIONS = ('laki', 'grunty', 'aerozoli', 'shpatlevki', 'otverditeli', 'abrazivy', 'lenty', 'raspyliteli', 'raptor', 'avtohimiya', 'oborudovanie', 'prochee', 'emal')  # разделы, для которых делаются отдельные страницы товаров
 TR = dict(zip('абвгдеёжзийклмнопрстуфхцчшщъыьэюя', ['a','b','v','g','d','e','e','zh','z','i','j','k','l','m','n','o','p','r','s','t','u','f','h','c','ch','sh','sch','','y','','e','yu','ya']))
 def slugify(t):
     t = t.lower()
