@@ -348,7 +348,7 @@ def product_page(sl):
         ph = '<div class="pvn">Фото товара скоро появится</div>'
     back = crumbs[-1][0]
     bc = '<nav class="bc" aria-label="Путь"><a href="/">Главная</a>' + ''.join(' / <a href="%s">%s</a>' % (path_of(p), e(n)) for p, n in crumbs) + ' / ' + e(ti) + '</nav>'
-    body = ('<div class="top-nav brandline"><a class="logo" href="/" aria-label="Avtokraski_Pro — на главную"><img data-img="logo" class="limg" alt="Avtokraski_Pro" width="220" height="56"></a></div>'
+    body = ('<div class="top-nav brandline"><a class="logo" href="/" aria-label="Avtokraski_Pro — на главную"><img data-img="logo" class="limg" alt="Avtokraski_Pro" width="220" height="56"></a><a class="abt" href="/o-kompanii/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r=".6" fill="currentColor"/></svg>О нас</a></div>'
             + re.search(r'<div class="hb3">.*?</div>', TPL[crumbs[0][0]][1], re.S).group(0)
             + '<div data-nav="%s"></div>' % crumbs[0][0] + bc
             + '<div class="pvw pp"><a class="pvb" href="%s">← Назад к разделу «%s»</a>' % (path_of(back), e(crumbs[-1][1])) + ph
