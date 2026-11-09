@@ -91,3 +91,5 @@ window.addEventListener("popstate",function(e){if(!sv.hidden&&!(e.state&&e.state
 window.addEventListener("hashchange",function(){close(true)});
 })();
 show(cur());
+// ссылки из статей на товары: в черновике нет страниц товаров — открываем окно товара
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a.alink[data-i]");if(!a)return;e.preventDefault();var w=document.createElement("div");w.innerHTML=CD[+a.getAttribute("data-i")];var c=w.firstChild;if(!c)return;var wa=c.querySelector("a.wa"),t=c.querySelector("h2").textContent;if(wa)wa.setAttribute("href","https://wa.me/77771187355?text="+encodeURIComponent("Здравствуйте! Интересует товар: "+t+". Подскажите цену и наличие."));openP(c)},true);
