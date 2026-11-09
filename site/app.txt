@@ -581,6 +581,7 @@ document.addEventListener("scroll",function(e){var t=e.target;if(t&&t.classList&
 var last=null;
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".gal .ga");
  if(b){e.stopPropagation();e.preventDefault();var tr=b.parentNode.querySelector(".gtr"),w=tr.clientWidth,n=Math.round(tr.scrollLeft/w),c=tr.children.length;n=b.classList.contains("gn")?(n+1)%c:(n-1+c)%c;tr.scrollTo({left:n*w,behavior:"smooth"});return}
+ var hs=e.target.closest&&e.target.closest(".hs-it"); if(hs){var k=hs.getAttribute("data-i"),html=(window.HSC&&window.HSC[k])||(window.CD&&window.CD[+k])||"",w=document.createElement("div");w.innerHTML=html;var cc=w.firstElementChild;last=cc&&cc.querySelector(".gal")?cc:null;if(last)setTimeout(pop,0);return}  /* слайдер на главной: окно товара тоже с галереей */
  var c=e.target.closest&&e.target.closest(".card");last=c&&c.querySelector(".gal")?c:null;
  if(last)setTimeout(pop,0)},true);
 function pop(){var pv=document.getElementById("pv");if(!pv||pv.hidden||!last)return;var one=pv.querySelector(".pvi");if(!one)return;
