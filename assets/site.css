@@ -89,7 +89,7 @@ h1.pt{font:700 clamp(28px,5vw,44px)/1.05 "Barlow Condensed","Arial Narrow",sans-
 .hs-nav button{position:absolute;top:calc(50% + 21px);z-index:3;width:40px;height:40px;margin-top:-20px;border-radius:50%;border:1px solid #d5dadd;background:rgba(255,255,255,.95);color:#1b2228;font-size:22px;line-height:1;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12)}
 .hs-prev{left:10px}.hs-next{right:10px}
 .hs-bar{position:absolute;left:0;bottom:0;height:3px;width:0;background:#c8161d;z-index:3}
-.hs-bar.run{width:100%;transition:width 4s linear}
+.hs-bar.run{width:100%;transition:width 2s linear}
 @media (max-width:900px){.hs-it{flex-basis:50%}}
 @media (max-width:560px){.hs-it{flex-basis:100%;padding:8px 44px 14px}.hs-brand small{display:none}.hs-it img{max-height:300px}}
 @media (prefers-reduced-motion:reduce){.hs-tr{transition:none}.hs-bar.run{transition:none;width:0}}
