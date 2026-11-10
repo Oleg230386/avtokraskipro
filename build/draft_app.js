@@ -18,9 +18,10 @@ ids.forEach(function(i){var m=CD[i].match(/data-hs="([^"]+)"/)||CD[i].match(/dat
 h+='</div></div><div class="hs-nav"><button type="button" class="hs-prev" aria-label="Назад">‹</button><button type="button" class="hs-next" aria-label="Вперёд">›</button></div><div class="hs-bar"></div>';
 el.innerHTML=h;setImg(el.querySelector(".hs-brand img"));
 var tr=el.querySelector(".hs-tr"),IT=el.querySelectorAll(".hs-it"),N=IT.length,cur=0,bar=el.querySelector(".hs-bar"),paused=false;
+function mix(){var a=[].slice.call(tr.children);for(var j=a.length-1;j>0;j--){var r=Math.floor(Math.random()*(j+1)),t=a[j];a[j]=a[r];a[r]=t}a.forEach(function(x){tr.appendChild(x)});IT=tr.querySelectorAll(".hs-it");load()}mix();
 function vis(){var w=window.innerWidth;return w<=560?1:(w<=900?2:4)}
 function load(){var v=vis();for(var k=cur;k<cur+v*2&&k<N;k++){var im=IT[k].querySelector("img");if(im&&!im.getAttribute("src"))setImg(im)}}
-function go(k){var v=vis(),mx=Math.max(0,N-v);cur=k>mx?0:(k<0?mx:k);tr.style.transform="translateX("+(-cur*100/v)+"%)";load();run()}
+function go(k){var v=vis(),mx=Math.max(0,N-v);if(k>mx)mix();cur=k>mx?0:(k<0?mx:k);tr.style.transform="translateX("+(-cur*100/v)+"%)";load();run()}
 function run(){if(HST)clearTimeout(HST);bar.classList.remove("run");void bar.offsetWidth;if(paused||!document.body.contains(el))return;bar.classList.add("run");HST=setTimeout(function(){if(document.body.contains(el))go(cur+1)},2000)}
 el.querySelector(".hs-prev").addEventListener("click",function(){go(cur-1)});el.querySelector(".hs-next").addEventListener("click",function(){go(cur+1)});
 el.addEventListener("mouseenter",function(){paused=true;run()});el.addEventListener("mouseleave",function(){paused=false;run()});
