@@ -94,3 +94,4 @@ window.addEventListener("hashchange",function(){close(true)});
 show(cur());
 // ссылки из статей на товары: в черновике нет страниц товаров — открываем окно товара
 document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a.alink[data-i]");if(!a)return;e.preventDefault();var w=document.createElement("div");w.innerHTML=CD[+a.getAttribute("data-i")];var c=w.firstChild;if(!c)return;var wa=c.querySelector("a.wa"),t=c.querySelector("h2").textContent;if(wa)wa.setAttribute("href","https://wa.me/77771187355?text="+encodeURIComponent("Здравствуйте! Интересует товар: "+t+". Подскажите цену и наличие."));openP(c)},true);
+window.addEventListener("hashchange",function(e){var o=decodeURIComponent((e.oldURL||"").split("#")[1]||"");var a=document.querySelector("a.tipback");if(!a)return;if(/^(raspyliteli|oborudovanie\.krasko)/.test(o)){a.setAttribute("href","#"+o);var s=a.querySelector("span");if(s)s.textContent="Вернуться к краскопультам"}});
