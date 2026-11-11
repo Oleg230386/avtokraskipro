@@ -11,7 +11,7 @@ if ! git diff --quiet -- site build/wm_done.json || [ -n "$(git status --porcela
   git add site build/wm_done.json && git commit -q -m "Черновик: ${1:-обновление}" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" && git push -q origin main
 fi
 rm -rf .deploy && git worktree prune
-git fetch -q origin deploy 2>/dev/null && git worktree add -q .deploy origin/deploy -B deploy || git worktree add -q --orphan -b deploy .deploy
+git fetch -q origin +deploy:refs/remotes/origin/deploy 2>/dev/null && git worktree add -q .deploy origin/deploy -B deploy || git worktree add -q --orphan -b deploy .deploy
 find .deploy -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
 cp -a static/. .deploy/
 cd .deploy
