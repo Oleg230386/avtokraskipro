@@ -165,6 +165,8 @@ LD_HOME = {
 
 import hashlib
 APP_JS = open(B + '/tdv.js', encoding='utf8').read() + '\n' + open(B + '/app.js', encoding='utf8').read() + '\n' + open(B + '/cart.js', encoding='utf8').read() + '\n' + open(B + '/gal.js', encoding='utf8').read()  # сайт + корзина + галерея фото
+CARDS_VER = hashlib.md5(open(SITE + '/app.txt', 'rb').read()).hexdigest()[:8]
+APP_JS = APP_JS.replace('/assets/cards.js?v=1', '/assets/cards.js?v=' + CARDS_VER)
 APP_JS_VER = hashlib.md5((CSS + APP_JS).encode('utf8')).hexdigest()[:8]  # меняется при любой правке оформления/скрипта — телефоны сразу берут новое
 
 def page(pid, title_t, body):
@@ -328,6 +330,33 @@ PP_DOCS = json.loads(re.sub(r'([{,])(pdf|pg|src|rows|hard):', r'\1"\2":', _dj))
 
 TIPB = re.search(r'<a class="tipb".*?</a>', T, re.S).group(0)  # кнопка «Полезные советы» (из шаблона раздела краскопультов)
 
+RELM = {"Краскопульты":["Лаки","Разбавители","Грунты","Ленты и маскировка","Абразивы","Прочие материалы"],"Лаки":["Разбавители","Краскопульты","Абразивы","Ленты и маскировка","Автохимия и полировка"],"Грунты":["Разбавители","Шпатлёвки","Абразивы","Краскопульты","Ленты и маскировка"],"Шпатлёвки":["Абразивы","Грунты","Прочие материалы","Ленты и маскировка"],"Разбавители":["Лаки","Грунты","Краскопульты","Ленты и маскировка"],"Абразивы":["Шпатлёвки","Грунты","Автохимия и полировка","Ленты и маскировка"],"Ленты и маскировка":["Абразивы","Лаки","Краскопульты","Прочие материалы"],"Аэрозоли":["Абразивы","Ленты и маскировка","Прочие материалы","Аэрозоли"],"Автохимия и полировка":["Автохимия и полировка","Абразивы","Оборудование"],"Оборудование":["Абразивы","Краскопульты","Оборудование","Ленты и маскировка","Автохимия и полировка"],"Прочие материалы":["Абразивы","Ленты и маскировка","Лаки","Разбавители"],"Эмаль для спецтехники и металлоконструкций":["Разбавители","Краскопульты","Грунты","Абразивы"]}
+import random as _rnd
+def rel_block(i, cat, ti):
+    cats = RELM.get(cat.strip()) or ["Абразивы", "Ленты и маскировка", "Лаки", "Разбавители"]
+    pools = {}
+    for j, c in enumerate(CD):
+        if not c or j not in PP: continue
+        t = (re.search(r'<div class="top">(.*?)</div>', c) or [None, None])[1]
+        if t not in cats or 'data-img="' not in c or '₸' not in c: continue
+        if strip_tags(re.search(r'<h2>(.*?)</h2>', c, re.S).group(1)).strip() == ti: continue
+        pools.setdefault(t, []).append(j)
+    r = _rnd.Random(i); out = []; seen = set(); k = 0; g = 0
+    while len(out) < 8 and g < 300:
+        g += 1; t = cats[k % len(cats)]; k += 1; p = pools.get(t)
+        if not p: continue
+        j = p.pop(r.randrange(len(p))); h = re.search(r'<h2>(.*?)</h2>', CD[j], re.S).group(1)
+        if h in seen or PP[j] in [PP[x] for x in out]: continue
+        seen.add(h); out.append(j)
+    if not out: return ''
+    e = html.escape; s = ''
+    for j in out:
+        c = CD[j]; gg = lambda rx: (re.search(rx, c, re.S) or [None, ''])[1]
+        k_ = gg(r'data-img="([^"]+)"'); nm = strip_tags(gg(r'<h2>(.*?)</h2>')).strip()
+        s += '<a class="relc" href="/tovar/%s/"><img data-img="%s" alt="%s" width="160" height="160" loading="lazy"><em>%s</em><b>%s</b><span>%s</span></a>' % (
+            PP[j], k_, e(nm), e(strip_tags(gg(r'<div class="top">(.*?)</div>'))), e(nm), e(strip_tags(gg(r'<div class="price">(.*?)</div>')).strip()))
+    return '<div class="rel"><h3>С этим товаром также ищут</h3><div class="relg">%s</div></div>' % s
+
 def product_page(sl):
     i, crumbs = PP_HOME[sl]
     c = _card_html0(CD[i])
@@ -372,6 +401,7 @@ def product_page(sl):
             + ('<div class="price">%s</div>' % pr_html if pr_html else '')
             + ('<a class="btn" href="%s" target="_blank" rel="noopener">Узнать цену и наличие</a>' % wa_href if wa_href else '')
             + (TIPB if (re.search(r'(?i)краскопульт', ti) or cat == 'Краскопульты') else '')
+            + rel_block(i, cat, ti)
             + '</div><footer data-f></footer>')
     def navr(m):
         cc = m.group(1)
@@ -426,7 +456,7 @@ print('pages', len(paths), 'products', len(ppaths))
 # ---------- cards.js for global search ----------
 js = open(SITE + '/app.txt', encoding='utf8').read().split('\x00', 1)[1]
 a = js.find('var CD=') + 7; b = js.find(';var pgs', a)
-open(OUT + '/assets/cards.js', 'w', encoding='utf8').write('window.CD=' + js[a:b] + ';')
+open(OUT + '/assets/cards.js', 'w', encoding='utf8').write('window.CD=' + js[a:b] + ';window.PPS=' + json.dumps({str(k): v for k, v in PP.items()}, separators=(',', ':')) + ';')
 
 # ---------- sitemap / robots / 404 / htaccess ----------
 today = datetime.date.today().isoformat()
