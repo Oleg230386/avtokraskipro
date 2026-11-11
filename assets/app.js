@@ -107,6 +107,7 @@ window.addEventListener("popstate",function(e){if(!sv.hidden&&!(e.state&&e.state
 })();
 
 })();
+(function(){var a=document.querySelector("a.tipback");if(!a||!document.referrer)return;try{var u=new URL(document.referrer);if(u.host!==location.host)return;var p=u.pathname,t=null;if(/^\/(raspyliteli|oborudovanie\/krasko)(\/|$)/.test(p))t=p;else if(/^\/tovar\//.test(p))t="/raspyliteli/";if(t){a.setAttribute("href",t);var s=a.querySelector("span");if(s)s.textContent="Вернуться к краскопультам"}}catch(e){}})();
 
 /* Корзина-заявка: товары собираются на сайте и отправляются менеджеру в WhatsApp. Оплаты нет. */
 (function(){
