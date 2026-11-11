@@ -436,6 +436,7 @@ ErrorDocument 404 /404.html
 DirectoryIndex index.html
 
 # Старые адреса товаров после переименования -> новые (сохраняем позиции в поиске)
+Redirect 301 /raspyliteli/usi/ https://avtokraskipro.kz/raspyliteli/walcom/
 Redirect 301 /tovar/055353-spotter-2700-moschnost-2600a-230v/ https://avtokraskipro.kz/tovar/055353-spotter-gys-gyspot-2700-2600-a-230-v/
 
 # Перенаправление на https: включить (убрать # в 4 строках ниже) после установки SSL-сертификата
