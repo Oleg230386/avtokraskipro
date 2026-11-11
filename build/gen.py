@@ -133,6 +133,12 @@ def meta_for(pid, h1, count, chips):
     if pid == 'o-kompanii':
         return ('О компании Avtokraski_Pro — автокраски и материалы для кузовного ремонта в Астане',
                 'Avtokraski_Pro — магазин автокрасок в Астане: более 1000 позиций PPG, U-POL, RANAL, Norton, RUPES. Официальный дистрибьютор, подбор краски по коду, доставка по Казахстану и СНГ.')
+    if pid == 'sovety':
+        return ('Полезные советы по покраске авто — Avtokraski_Pro, Астана',
+                'Советы от Avtokraski_Pro: как подобрать и настроить краскопульт, выбрать дюзу под базу, лак и грунт, правильно мыть краскопульт.')
+    if pid == 'sovety.nastroyka-kraskopulta':
+        return ('Как настроить краскопульт: выбор дюзы, давление, факел, мойка Walcom и Anest Iwata | Avtokraski_Pro',
+                'Какую дюзу выбрать под базу (1.3), лак (1.4), грунт (1.7), жидкую шпатлёвку и Raptor (2.0–2.5). Давление, ширина факела, подача краски и правильная мойка краскопультов Walcom и Anest Iwata.')
     brands = ', '.join(chips[:5])
     if pid.startswith('brand-'):
         secs = ', '.join(c.lower() for c in chips[:4])
@@ -208,6 +214,12 @@ def page(pid, title_t, body):
             items.append({"@type": "ListItem", "position": len(items) + 1, "name": h1, "item": url})
             ld = '<script type="application/ld+json">%s</script>' % json.dumps(
                 {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": items}, ensure_ascii=False)
+    if pid.startswith('sovety.'):  # статья — разметка Article для поиска
+        ld += '<script type="application/ld+json">%s</script>' % json.dumps(
+            {"@context": "https://schema.org", "@type": "Article", "headline": h1[:110], "description": desc, "url": url,
+             "inLanguage": "ru", "image": DOMAIN + "/img/slimk-1.webp",
+             "author": {"@type": "Organization", "name": "Avtokraski_Pro"},
+             "publisher": {"@type": "Organization", "name": "Avtokraski_Pro", "logo": {"@type": "ImageObject", "url": DOMAIN + "/img/logo.webp"}}}, ensure_ascii=False)
     hsc = ''
     if hs_cards:
         hsc = '<script>window.HSC=%s;</script>' % json.dumps({str(k): v for k, v in hs_cards.items()}, ensure_ascii=False).replace('</', '<\\/')
@@ -314,6 +326,8 @@ def pp_tds(code):
 _dj = re.search(r'var DOCS=(\{.*\});$', open(B + '/app.js', encoding='utf8').read(), re.M).group(1)
 PP_DOCS = json.loads(re.sub(r'([{,])(pdf|pg|src|rows|hard):', r'\1"\2":', _dj))
 
+TIPB = re.search(r'<a class="tipb".*?</a>', T, re.S).group(0)  # кнопка «Полезные советы» (из шаблона раздела краскопультов)
+
 def product_page(sl):
     i, crumbs = PP_HOME[sl]
     c = _card_html0(CD[i])
@@ -357,6 +371,7 @@ def product_page(sl):
             + pp_tds(code)
             + ('<div class="price">%s</div>' % pr_html if pr_html else '')
             + ('<a class="btn" href="%s" target="_blank" rel="noopener">Узнать цену и наличие</a>' % wa_href if wa_href else '')
+            + (TIPB if (re.search(r'(?i)краскопульт', ti) or cat == 'Краскопульты') else '')
             + '</div><footer data-f></footer>')
     def navr(m):
         cc = m.group(1)
