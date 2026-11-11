@@ -453,6 +453,7 @@ DirectoryIndex index.html
 # Старые адреса товаров после переименования -> новые (сохраняем позиции в поиске)
 Redirect 301 /raspyliteli/usi/ https://avtokraskipro.kz/raspyliteli/walcom/
 Redirect 301 /tovar/055353-spotter-2700-moschnost-2600a-230v/ https://avtokraskipro.kz/tovar/055353-spotter-gys-gyspot-2700-2600-a-230-v/
+Redirect 301 /tovar/8230-kraskopult-walcom-aer-slim-xlight-hte-1-3mm-1-4mm-1-7mm-1-9mm-2/ https://avtokraskipro.kz/tovar/8230-kraskopult-walcom-aer-slim-xlight-halo-hte-1-3mm-1-4mm-1-5mm-1/
 
 # Перенаправление на https: включить (убрать # в 4 строках ниже) после установки SSL-сертификата
 #RewriteEngine On
