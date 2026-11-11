@@ -402,6 +402,7 @@ def product_page(sl):
             + ('<a class="btn" href="%s" target="_blank" rel="noopener">Узнать цену и наличие</a>' % wa_href if wa_href else '')
             + (TIPB if (re.search(r'(?i)краскопульт', ti) or cat == 'Краскопульты') else '')
             + rel_block(i, cat, ti)
+            + '<a class="pvb pvb2" href="%s">← Вернуться к каталогу</a>' % path_of(back)
             + '</div><footer data-f></footer>')
     def navr(m):
         cc = m.group(1)
