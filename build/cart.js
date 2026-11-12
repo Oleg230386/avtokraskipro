@@ -32,7 +32,7 @@ var WI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=
 
 /* ---- данные товара из карточки / из окна товара ---- */
 function fromCard(c){var t=(c.querySelector("h2")||{}).textContent||"",sb=(c.querySelector(".sub")||{}).textContent||"",pr=(c.querySelector(".price")||{}).textContent||"",im=c.querySelector("img.ph"),
-km=sb.match(/Код:\s*(.*?)(?:\.\s*Фасовка:|\.?$)/),fm=sb.match(/Фасовка:\s*(.*)$/);return mk(t,km?km[1].trim():"",fm?fm[1].trim():"",pr,im?(im.getAttribute("src")||""):"")}
+km=sb.match(/(?:Код|Коды):\s*(.*?)(?:\.\s*(?:Фасовка|Қаптама):|\.?$)/),fm=sb.match(/(?:Фасовка|Қаптама):\s*(.*)$/);return mk(t,km?km[1].trim():"",fm?fm[1].trim():"",pr,im?(im.getAttribute("src")||""):"")}
 function fromPv(pv){var t=(pv.querySelector("h1")||{}).textContent||"",cd="",pk="",dts=pv.querySelectorAll(".pvw > dl dt");[].forEach.call(dts,function(d){var v=d.nextElementSibling?d.nextElementSibling.textContent:"";if(d.textContent==="Код товара")cd=v;if(d.textContent==="Фасовка")pk=v});
 var pr=pv.querySelector(".pvw > .price"),im=pv.querySelector(".pvi")||pv.querySelector(".gal img");return mk(t,cd,pk,pr?pr.textContent:"",im?im.getAttribute("src"):"")}
 function mk(t,cd,pk,pr,img){t=t.trim();pr=pr.replace(/\s+/g," ").trim();return{k:t+"|"+pk,t:t,c:cd,f:pk,p:pr,v:num(pr),i:img&&img.indexOf("data:")!==0?img.split("?")[0]:"",q:1}}

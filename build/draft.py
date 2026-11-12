@@ -11,6 +11,7 @@ for k in ('IM', 'NAV', 'FOOT', 'ATT', 'TOP', 'CD'):
 js = open(B + '/tdv.js', encoding='utf8').read() + '\n' + open(B + '/lb.js', encoding='utf8').read() + '\n' + js  # просмотр техкарт — первым, чтобы «назад» закрывал техкарту, а не окно товара
 js += '\n' + open(B + '/cart.js', encoding='utf8').read()  # корзина
 js += '\n' + open(B + '/gal.js', encoding='utf8').read()  # галерея фото
+js += '\nwindow.KK=' + json.dumps(json.load(open(B + '/kk.json', encoding='utf8')), ensure_ascii=False, separators=(',', ':')) + ';\n' + open(B + '/i18n.js', encoding='utf8').read()  # язык РУС | ҚАЗ
 app = T + '\x00' + js
 open(SITE + '/app.txt', 'w', encoding='utf8').write(app)
 z = base64.b64encode(gzip.compress(app.encode('utf8'), 9, mtime=0)).decode()

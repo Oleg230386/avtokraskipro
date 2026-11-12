@@ -171,9 +171,15 @@ LD_HOME = {
 }
 
 import hashlib
-APP_JS = open(B + '/tdv.js', encoding='utf8').read() + '\n' + open(B + '/lb.js', encoding='utf8').read() + '\n' + open(B + '/app.js', encoding='utf8').read() + '\n' + open(B + '/cart.js', encoding='utf8').read() + '\n' + open(B + '/gal.js', encoding='utf8').read()  # сайт + корзина + галерея фото
+APP_JS = open(B + '/tdv.js', encoding='utf8').read() + '\n' + open(B + '/lb.js', encoding='utf8').read() + '\n' + open(B + '/app.js', encoding='utf8').read() + '\n' + open(B + '/cart.js', encoding='utf8').read() + '\n' + open(B + '/gal.js', encoding='utf8').read() + '\n' + open(B + '/i18n.js', encoding='utf8').read()  # сайт + корзина + галерея фото
 CARDS_VER = hashlib.md5(open(SITE + '/app.txt', 'rb').read()).hexdigest()[:8]
 APP_JS = APP_JS.replace('/assets/cards.js?v=1', '/assets/cards.js?v=' + CARDS_VER)
+KK_JSON = json.dumps(json.load(open(B + '/kk.json', encoding='utf8')), ensure_ascii=False, separators=(',', ':'))  # казахский словарь, грузится только при выборе ҚАЗ
+APP_JS = APP_JS.replace('/assets/kk.json?v=1', '/assets/kk.json?v=' + hashlib.md5(KK_JSON.encode('utf8')).hexdigest()[:8])
+open(OUT + '/assets/kk.json', 'w', encoding='utf8').write(KK_JSON)
+# язык: если выбран казахский — прячем страницу до перевода (без мигания русского текста), максимум 2.5 с
+LNG_HEAD = ('<script>try{if(localStorage.getItem("akp_lang")==="kk"){var d=document.documentElement;d.lang="kk";d.className+=" kkp";'
+            'setTimeout(function(){d.classList.remove("kkp")},2500)}}catch(e){}</script><style>html.kkp body{opacity:0}</style>')
 APP_JS_VER = hashlib.md5((CSS + APP_JS).encode('utf8')).hexdigest()[:8]  # меняется при любой правке оформления/скрипта — телефоны сразу берут новое
 
 def page(pid, title_t, body):
@@ -232,7 +238,7 @@ def page(pid, title_t, body):
     hsc = ''
     if hs_cards:
         hsc = '<script>window.HSC=%s;</script>' % json.dumps({str(k): v for k, v in hs_cards.items()}, ensure_ascii=False).replace('</', '<\\/')
-    doc = ('<!DOCTYPE html>\n<html lang="ru"><head><meta charset="utf-8">' + GA +
+    doc = ('<!DOCTYPE html>\n<html lang="ru"><head><meta charset="utf-8">' + LNG_HEAD + GA +
            '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">'
            '<title>%s</title><meta name="description" content="%s"><link rel="canonical" href="%s">'
            '<meta property="og:type" content="website"><meta property="og:site_name" content="Avtokraski_Pro">'
@@ -437,7 +443,7 @@ def product_page(sl):
     ld = '<script type="application/ld+json">%s</script><script type="application/ld+json">%s</script>' % (
         json.dumps(prod, ensure_ascii=False).replace('</', '<\\/'),
         json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": items}, ensure_ascii=False))
-    doc = ('<!DOCTYPE html>\n<html lang="ru"><head><meta charset="utf-8">' + GA +
+    doc = ('<!DOCTYPE html>\n<html lang="ru"><head><meta charset="utf-8">' + LNG_HEAD + GA +
            '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">'
            '<title>%s</title><meta name="description" content="%s"><link rel="canonical" href="%s">'
            '<meta property="og:type" content="product"><meta property="og:site_name" content="Avtokraski_Pro">'
