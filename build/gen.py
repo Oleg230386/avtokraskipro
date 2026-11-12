@@ -41,6 +41,13 @@ for f in glob.glob(SITE + '/img/s*.json'):
     for k, v in json.load(open(f)).items():
         save_img(k, v)
 print('images', len(os.listdir(OUT + '/img')))
+# большие фото для просмотра на весь экран (/img/big/<ключ>.webp); нет большого — копия обычного
+os.makedirs(OUT + '/img/big', exist_ok=True)
+for f in glob.glob(SITE + '/img/s*.json'):
+    if f.endswith('/si.json'): continue
+    for k in json.load(open(f)):
+        bp = B + '/big/' + k + '.webp'
+        shutil.copy(bp if os.path.exists(bp) else f'{OUT}/img/{k}.webp', f'{OUT}/img/big/{k}.webp')
 
 # ---------- helpers ----------
 def path_of(pid):
@@ -164,7 +171,7 @@ LD_HOME = {
 }
 
 import hashlib
-APP_JS = open(B + '/tdv.js', encoding='utf8').read() + '\n' + open(B + '/app.js', encoding='utf8').read() + '\n' + open(B + '/cart.js', encoding='utf8').read() + '\n' + open(B + '/gal.js', encoding='utf8').read()  # сайт + корзина + галерея фото
+APP_JS = open(B + '/tdv.js', encoding='utf8').read() + '\n' + open(B + '/lb.js', encoding='utf8').read() + '\n' + open(B + '/app.js', encoding='utf8').read() + '\n' + open(B + '/cart.js', encoding='utf8').read() + '\n' + open(B + '/gal.js', encoding='utf8').read()  # сайт + корзина + галерея фото
 CARDS_VER = hashlib.md5(open(SITE + '/app.txt', 'rb').read()).hexdigest()[:8]
 APP_JS = APP_JS.replace('/assets/cards.js?v=1', '/assets/cards.js?v=' + CARDS_VER)
 APP_JS_VER = hashlib.md5((CSS + APP_JS).encode('utf8')).hexdigest()[:8]  # меняется при любой правке оформления/скрипта — телефоны сразу берут новое
