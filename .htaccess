@@ -8,6 +8,7 @@ Redirect 301 /brand/usi/ https://avtokraskipro.kz/brand/walcom/
 Redirect 301 /brand/nar-ppm-hpx/ https://avtokraskipro.kz/brand/hpx/
 Redirect 301 /tovar/055353-spotter-2700-moschnost-2600a-230v/ https://avtokraskipro.kz/tovar/055353-spotter-gys-gyspot-2700-2600-a-230-v/
 Redirect 301 /tovar/8230-kraskopult-walcom-aer-slim-xlight-hte-1-3mm-1-4mm-1-7mm-1-9mm-2/ https://avtokraskipro.kz/tovar/8230-kraskopult-walcom-aer-slim-xlight-halo-hte-1-3mm-1-4mm-1-5mm-1/
+Redirect 301 /tovar/10083-kraskopult-walcom-slim-s-halo-sr-10083-soplo-1-3-1-5-1-7/ https://avtokraskipro.kz/tovar/10083-kraskopult-walcom-slim-s-halo-sr-10083-soplo-1-3-1-5-1-7-2-5/
 
 # Перенаправление на https: включить (убрать # в 4 строках ниже) после установки SSL-сертификата
 #RewriteEngine On
