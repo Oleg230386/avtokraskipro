@@ -55,6 +55,8 @@ def fix_body(p, body):
         changes.append('%s: плитка %s %s→%s' % (p, m.group(2), m.group(4), pl(n)))
         return m.group(1) + m.group(3) + pl(n) + m.group(5)
     body = re.sub(r'(<a class="tile" href="#([a-z0-9.\-]+)">)(<b>[^<]*</b><span>)(\d+ позици[яий]+)(</span>)', tile, body)
+    # плитка «Изделия на 3D-принтере» на главной (класс tile pl, с иконкой)
+    body = re.sub(r'(<a class="tile pl" href="#(pechat-3d)">.*?<b>[^<]*</b>)(<span>)(\d+ позици[яий]+)(</span>)', tile, body)
     n = count(p)
     if n is not None and ids_of(body):
         def tot(m):
