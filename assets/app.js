@@ -91,7 +91,7 @@ document.addEventListener("keydown",function(e){if(!v||v.hidden)return;if(e.key=
 (function(){
 var W="77771187355",ATT="Узнать цену и наличие";function u(t){return"https://wa.me/"+W+"?text="+encodeURIComponent(t)}
 function setImg(i){var k=i.getAttribute("data-img");if(k){i.setAttribute("src","/img/"+k+".webp");i.removeAttribute("data-img")}}
-var CDL=null;function loadCD(cb){if(window.CD){cb();return}if(!CDL){CDL=[];var s=document.createElement("script");s.src="/assets/cards.js?v=63e53a90";s.onload=function(){var q=CDL;CDL=null;q.forEach(function(f){f()})};document.head.appendChild(s)}CDL.push(cb)}
+var CDL=null;function loadCD(cb){if(window.CD){cb();return}if(!CDL){CDL=[];var s=document.createElement("script");s.src="/assets/cards.js?v=e508dff9";s.onload=function(){var q=CDL;CDL=null;q.forEach(function(f){f()})};document.head.appendChild(s)}CDL.push(cb)}
 var app=document.getElementById("app");
 function mark(root){[].forEach.call(root.querySelectorAll(".card"),function(c){var tx=function(q){var e=c.querySelector(q);return e?e.textContent:""};c.setAttribute("data-t",(tx(".top")+" "+tx("h2")+" "+tx(".meta")+" "+tx(".sub")).toLowerCase())})}
 mark(app);
@@ -314,18 +314,20 @@ if(m=t.match(/^Найдено: (\d+)$/))return "Табылды: "+m[1];
 if(m=t.match(/^Показано: (\d+)$/))return "Көрсетілді: "+m[1];
 if(m=t.match(/^← Назад к разделу «(.+)»$/))return "← «"+(core(m[1])||m[1])+"» бөліміне оралу";
 if(m=t.match(/^\/ (.+)$/)){var r=core(m[1]);return r?"/ "+r:null}
-if(m=t.match(/^Код: (.*?)(?:\. Фасовка: (.*))?$/))return "Коды: "+m[1]+(m[2]!=null?". Қаптама: "+m[2]:"");
+if(m=t.match(/^Код: (.*?)(?:\. Фасовка: (.*))?$/))return "Коды: "+m[1]+(m[2]!=null?". Қаптама: "+pk(m[2]):"");
+if(m=t.match(/^Фасовка: (.*?) · (.*)$/))return "Қаптама: "+m[1]+" · "+(core(m[2])||m[2]);
+if(m=t.match(/^(?:(.*?)\.? )?Фасовка: (.*)$/))return (m[1]?m[1].split(". ").map(function(x){return core(x)||x}).join(". ")+". ":"")+"Қаптама: "+pk(m[2]);
 if(m=t.match(/^(✓ |В корзине: )(\d+) шт$/))return (m[1]==="✓ "?"✓ ":"Себетте: ")+m[2]+" дана";
 if(m=t.match(/^(\d+) шт$/))return m[1]+" дана";
 if(m=t.match(/^Перейти в корзину, товаров: (\d+)$/))return "Себетке өту, тауарлар: "+m[1];
 if(m=t.match(/^(\d+) шт\. Цены по сайту(, без позиций с ценой по запросу)?\. Окончательную сумму подтвердит менеджер\.$/))return m[1]+" дана. Бағалар сайт бойынша"+(m[2]?", бағасы сұрау бойынша тауарларсыз":"")+". Соңғы соманы менеджер растайды.";
-if(m=t.match(/^Фасовка: (.*?) · (.*)$/))return "Қаптама: "+m[1]+" · "+(core(m[2])||m[2]);
 if(m=t.match(/^(.*\d ₸) за шт$/))return m[1]+" / дана";
 if(m=t.match(/^(.*\d ₸) за (кг|комплект)$/))return m[1]+" / "+(m[2]==="кг"?"кг":"жинақ");
 if(t.indexOf(" · ")>0){var p=t.split(" · "),ch=0;p=p.map(function(x){var r=core(x);if(r!=null){ch=1;return r}return x});return ch?p.join(" · "):null}
 /* «Лаки U-POL» → «U-POL лактары» */
 for(var i=0;i<PRE.length;i++){var k=PRE[i];if(t.indexOf(k+" ")===0){var rest=t.slice(k.length+1);if(/^[A-Za-z0-9][A-Za-z0-9 ,.&+\-]*$/.test(rest))return rest+" "+S[k]}}
 return null}
+function pk(v){return v.replace(/шт\.?/g,"дана").replace(/упак\.|уп\./g,"қаптама").replace(/рулон/g,"орам").replace(/отвердитель/g,"қатайтқыш").replace(/комплект/g,"жинақ")}
 function tx(s){var r=core(s);if(r==null)return null;var a=s.match(/^\s*/)[0],b=s.match(/\s*$/)[0];return (a?" ":"")+r+(b&&s.trim()?" ":"")}
 function title(t){var m=t.match(/^(.+?) — (купить в Астане, цены|цены и наличие в Астане|каталог и цены в Астане|купить в Астане(.*)) \| Avtokraski_Pro$/);
 if(m){var n=core(m[1])||m[1];return n+" — "+(m[2].indexOf("каталог")===0?"Астанадағы каталог және бағалар":m[2].indexOf("цены и наличие")===0?"Астанадағы бағалар мен қолда бары":"Астанада сатып алу"+(m[3]?m[3].replace(", цена",", бағасы"):", бағалар"))+" | Avtokraski_Pro"}
@@ -343,7 +345,7 @@ if(!MO&&window.MutationObserver){MO=new MutationObserver(function(ms){ms.forEach
 MO.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:AT})}}
 function load(cb){if(T)return cb();var set=function(d){T=d.t;S=d.sec;PRE=Object.keys(S).sort(function(a,b){return b.length-a.length});cb()};
 if(window.KK)return set(window.KK);
-fetch("/assets/kk.json?v=5cf125a8").then(function(r){return r.json()}).then(set,unhide)}
+fetch("/assets/kk.json?v=ca03f8b3").then(function(r){return r.json()}).then(set,unhide)}
 function start(){load(run)}
 /* при переходах в черновике шапка рисуется заново — вставляем переключатель снова */
 if(window.MutationObserver)new MutationObserver(function(){if([].some.call(document.querySelectorAll(".top-nav.brandline"),function(n){return !n.querySelector(".lng")}))sw()}).observe(document.body,{childList:true,subtree:true});
