@@ -91,7 +91,7 @@ document.addEventListener("keydown",function(e){if(!v||v.hidden)return;if(e.key=
 (function(){
 var W="77771187355",ATT="Узнать цену и наличие";function u(t){return"https://wa.me/"+W+"?text="+encodeURIComponent(t)}
 function setImg(i){var k=i.getAttribute("data-img");if(k){i.setAttribute("src","/img/"+k+".webp");i.removeAttribute("data-img")}}
-var CDL=null;function loadCD(cb){if(window.CD){cb();return}if(!CDL){CDL=[];var s=document.createElement("script");s.src="/assets/cards.js?v=f4fc8667";s.onload=function(){var q=CDL;CDL=null;q.forEach(function(f){f()})};document.head.appendChild(s)}CDL.push(cb)}
+var CDL=null;function loadCD(cb){if(window.CD){cb();return}if(!CDL){CDL=[];var s=document.createElement("script");s.src="/assets/cards.js?v=63e53a90";s.onload=function(){var q=CDL;CDL=null;q.forEach(function(f){f()})};document.head.appendChild(s)}CDL.push(cb)}
 var app=document.getElementById("app");
 function mark(root){[].forEach.call(root.querySelectorAll(".card"),function(c){var tx=function(q){var e=c.querySelector(q);return e?e.textContent:""};c.setAttribute("data-t",(tx(".top")+" "+tx("h2")+" "+tx(".meta")+" "+tx(".sub")).toLowerCase())})}
 mark(app);
@@ -109,7 +109,7 @@ el.querySelector(".hs-prev").addEventListener("click",function(){go(cur-1)});el.
 el.addEventListener("mouseenter",function(){paused=true;run()});el.addEventListener("mouseleave",function(){paused=false;run()});
 var x0=null;el.addEventListener("touchstart",function(e){x0=e.touches[0].clientX},{passive:true});el.addEventListener("touchend",function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>40)go(cur+(dx<0?1:-1))});
 window.addEventListener("resize",function(){if(document.body.contains(el))go(cur)});
-function more(it){var w=document.createElement("div");w.innerHTML=(window.HSC||{})[it.getAttribute("data-i")]||"";if(!w.firstChild)return;var c=w.firstChild,sb=c.querySelector(".sub"),t=c.querySelector("h2").textContent,km=sb?sb.textContent.match(/^Код: (.*?)(?:\. Фасовка:.*)?$/):null,cd=km?km[1]:"",nm=cd&&t.indexOf(cd+" · ")===0?t.slice(cd.length+3):t,wa=c.querySelector("a.wa");
+function more(it){var w=document.createElement("div");w.innerHTML=(window.HSC||{})[it.getAttribute("data-i")]||"";if(!w.firstChild)return;var c=w.firstChild,sb=c.querySelector(".sub"),t=c.querySelector("h2").textContent,km=sb?sb.textContent.match(/^(?:Код|Коды): (.*?)(?:\. (?:Фасовка|Қаптама):.*)?$/):null,cd=km?km[1]:"",nm=cd&&t.indexOf(cd+" · ")===0?t.slice(cd.length+3):t,wa=c.querySelector("a.wa");
 if(wa)wa.setAttribute("href",u("Здравствуйте! Интересует товар: "+nm+(cd?" (код "+cd+")":"")+". Подскажите цену и наличие."));var a=it.querySelector("img"),b=c.querySelector("img.ph");if(a&&b&&a.getAttribute("src"))b.setAttribute("src",a.getAttribute("src"));if(window.openP)window.openP(c)}
 [].forEach.call(IT,function(it){it.addEventListener("click",function(e){if(e.target.closest("a.pl"))return;e.preventDefault();more(it)});it.addEventListener("keydown",function(e){if(e.key==="Enter")more(it)})});
 go(0);if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches){paused=true;run()}}
@@ -122,7 +122,7 @@ function tds(code){var k=null;for(var d in DOCS){if(code.indexOf(d)===0)k=d}if(!
 var RELM={"Краскопульты":["Лаки","Разбавители","Грунты","Ленты и маскировка","Абразивы","Прочие материалы"],"Лаки":["Разбавители","Краскопульты","Абразивы","Ленты и маскировка","Автохимия и полировка"],"Грунты":["Разбавители","Шпатлёвки","Абразивы","Краскопульты","Ленты и маскировка"],"Шпатлёвки":["Абразивы","Грунты","Прочие материалы","Ленты и маскировка"],"Разбавители":["Лаки","Грунты","Краскопульты","Ленты и маскировка"],"Абразивы":["Шпатлёвки","Грунты","Автохимия и полировка","Ленты и маскировка"],"Ленты и маскировка":["Абразивы","Лаки","Краскопульты","Прочие материалы"],"Аэрозоли":["Абразивы","Ленты и маскировка","Прочие материалы","Аэрозоли"],"Автохимия и полировка":["Автохимия и полировка","Абразивы","Оборудование"],"Оборудование":["Абразивы","Краскопульты","Оборудование","Ленты и маскировка","Автохимия и полировка"],"Прочие материалы":["Абразивы","Ленты и маскировка","Лаки","Разбавители"],"Эмаль для спецтехники и металлоконструкций":["Разбавители","Краскопульты","Грунты","Абразивы"],"Изделия на 3D-принтере":["Абразивы","Шпатлёвки","Оборудование","Прочие материалы"]};function relPick(cat,ti,CD,n){var cats=RELM[(cat||"").trim()]||["Абразивы","Ленты и маскировка","Лаки","Разбавители"],pools={},i,c,t,h;for(i=0;i<CD.length;i++){c=CD[i];if(!c)continue;t=(c.match(/<div class="top">(.*?)<\/div>/)||[])[1];if(!t||cats.indexOf(t)<0)continue;if(!/data-img="/.test(c)||!/₸/.test(c))continue;h=(c.match(/<h2>(.*?)<\/h2>/)||[,""])[1].replace(/<[^>]+>/g,"");if(h===ti)continue;(pools[t]=pools[t]||[]).push(i)}var out=[],seen={},k=0,g=0;while(out.length<n&&g++<300){t=cats[k++%cats.length];var p=pools[t];if(!p||!p.length)continue;var j=p.splice(Math.floor(Math.random()*p.length),1)[0];h=(CD[j].match(/<h2>(.*?)<\/h2>/)||[,""])[1];if(seen[h])continue;seen[h]=1;out.push(j)}return out}function relCard(c,href,ci,src){var g=function(r){return(c.match(r)||[,""])[1]},k=g(/data-img="([^"]+)"/),nm=g(/<h2>(.*?)<\/h2>/).replace(/<[^>]+>/g,""),pr=g(/<div class="price">(.*?)<\/div>/).replace(/<[^>]+>/g,""),tp=g(/<div class="top">(.*?)<\/div>/);return'<a class="relc" href="'+href+'"'+(ci!=null?' data-ci="'+ci+'"':'')+'><img '+(src?'src="'+src(k)+'"':'data-img="'+k+'"')+' alt="'+esc(nm)+'" width="160" height="160" loading="lazy"><em>'+esc(tp)+'</em><b>'+esc(nm)+'</b><span>'+esc(pr)+'</span></a>'}function relFill(cat,ti){var el=document.getElementById("pvrel");if(!el)return;loadCD(function(){var CD=window.CD,P=window.PPS||{},L=relPick(cat,ti,CD,12),h="",n=0;L.forEach(function(j){if(n<8&&P[j]){h+=relCard(CD[j],"/tovar/"+P[j]+"/",null,function(k){return"/img/"+k+".webp"});n++}});if(h&&document.getElementById("pvrel")===el)el.innerHTML="<h3>С этим товаром также ищут</h3><div class=\"relg\">"+h+"</div>"})}
 window.openP=openP;
 function openP(c){var im=c.querySelector("img.ph"),cat=(c.querySelector(".top")||{}).textContent||"",ti=c.querySelector("h2").textContent,me=(c.querySelector(".meta")||{}).textContent||"",sb=(c.querySelector(".sub")||{}).textContent||"",ds=c.querySelector(".desc"),pr=c.querySelector(".price"),wa=c.querySelector("a.wa");
-var rows="",m=sb.match(/Код:\s*(.*?)(?:\.\s*Фасовка:|\.?$)/),f=sb.match(/Фасовка:\s*(.*)$/);if(me)rows+="<dt>Бренд / серия</dt><dd>"+esc(me)+"</dd>";if(cat)rows+="<dt>Раздел</dt><dd>"+esc(cat)+"</dd>";if(m)rows+="<dt>Код товара</dt><dd>"+esc(m[1].trim())+"</dd>";if(f)rows+="<dt>Фасовка</dt><dd>"+esc(f[1].trim())+"</dd>";if(!m&&!f&&sb)rows+="<dt>Данные</dt><dd>"+esc(sb)+"</dd>";
+var rows="",m=sb.match(/(?:Код|Коды):\s*(.*?)(?:\.\s*(?:Фасовка|Қаптама):|\.?$)/),f=sb.match(/(?:Фасовка|Қаптама):\s*(.*)$/);if(me)rows+="<dt>Бренд / серия</dt><dd>"+esc(me)+"</dd>";if(cat)rows+="<dt>Раздел</dt><dd>"+esc(cat)+"</dd>";if(m)rows+="<dt>Код товара</dt><dd>"+esc(m[1].trim())+"</dd>";if(f)rows+="<dt>Фасовка</dt><dd>"+esc(f[1].trim())+"</dd>";if(!m&&!f&&sb)rows+="<dt>Данные</dt><dd>"+esc(sb)+"</dd>";
 var h='<div class="pvw"><button class="pvb" type="button" id="pvx">← Назад к каталогу</button>';
 h+=im&&im.getAttribute("src")?'<img class="pvi" src="'+im.getAttribute("src")+'" alt="'+esc(im.alt||ti)+'">':'<div class="pvn">Фото товара скоро появится</div>';
 h+='<div class="pvc">'+esc(cat)+'</div><h1>'+esc(ti)+'</h1>'+(rows?'<dl>'+rows+'</dl>':'');
@@ -156,7 +156,7 @@ sv.innerHTML='<div class="svw"><div class="svh"><input type="search" id="sq" pla
 document.body.appendChild(sv);
 var sq=sv.querySelector("#sq"),svm=sv.querySelector("#svm"),svs=sv.querySelector("#svs"),svr=sv.querySelector("#svr"),svmore=sv.querySelector("#svmore");
 var RES=[],SHOWN=0,STEP=40,pushed=false,timer=null;
-function hydrate(root){[].forEach.call(root.querySelectorAll(".card"),function(c){var tx=function(q){var e=c.querySelector(q);return e?e.textContent:""},t=tx("h2"),sb=tx(".sub");c.setAttribute("data-t",(tx(".top")+" "+t+" "+tx(".meta")+" "+sb).toLowerCase());var a=c.querySelector("a.wa");if(a){var w=a.getAttribute("data-w");if(!w){var k=sb.match(/^Код: (.*?)(?:\. Фасовка:.*)?$/),cd=k?k[1]:null,nm=cd&&t.indexOf(cd+" · ")===0?t.slice(cd.length+3):t;w="Здравствуйте! Интересует товар: "+nm+(cd?" (код "+cd+")":"")+". Подскажите цену и наличие."}a.href=u(w);a.target="_blank";a.rel="noopener";a.textContent=ATT}});[].forEach.call(root.querySelectorAll("img[data-img]"),setImg)}
+function hydrate(root){[].forEach.call(root.querySelectorAll(".card"),function(c){var tx=function(q){var e=c.querySelector(q);return e?e.textContent:""},t=tx("h2"),sb=tx(".sub");c.setAttribute("data-t",(tx(".top")+" "+t+" "+tx(".meta")+" "+sb).toLowerCase());var a=c.querySelector("a.wa");if(a){var w=a.getAttribute("data-w");if(!w){var k=sb.match(/^(?:Код|Коды): (.*?)(?:\. (?:Фасовка|Қаптама):.*)?$/),cd=k?k[1]:null,nm=cd&&t.indexOf(cd+" · ")===0?t.slice(cd.length+3):t;w="Здравствуйте! Интересует товар: "+nm+(cd?" (код "+cd+")":"")+". Подскажите цену и наличие."}a.href=u(w);a.target="_blank";a.rel="noopener";a.textContent=ATT}});[].forEach.call(root.querySelectorAll("img[data-img]"),setImg)}
 function more(){var part=RES.slice(SHOWN,SHOWN+STEP).map(function(r){return r.c}).join("");var d=document.createElement("div");d.innerHTML=part;hydrate(d);while(d.firstChild)svr.appendChild(d.firstChild);SHOWN+=STEP;svmore.hidden=SHOWN>=RES.length}
 function links(tk){var o="";SEC.forEach(function(s){if(matchAll(norm(s[1]),tk))o+='<a class="chip" href="/'+s[0]+'/">'+s[1]+' →</a>'});BRS.forEach(function(b){if(matchAll(norm(b[1]),tk))o+='<a class="chip" href="/brand/'+b[0]+'/">'+b[1].split(" ")[0]+' →</a>'});return o}
 function run(){if(!window.CD){loadCD(run);return}build();var q=sq.value.trim();svr.innerHTML="";svs.innerHTML="";SHOWN=0;RES=[];if(!q){svm.textContent="Введите название, артикул или бренд. Можно по-русски или латиницей.";svs.innerHTML=["Raptor","Лаки","Краскопульты","PPG","Аэрозоли","D8125"].map(function(x){return'<a class="chip" href="#" data-q="'+x+'">'+x+'</a>'}).join("");svmore.hidden=true;return}
@@ -208,7 +208,7 @@ var WI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=
 
 /* ---- данные товара из карточки / из окна товара ---- */
 function fromCard(c){var t=(c.querySelector("h2")||{}).textContent||"",sb=(c.querySelector(".sub")||{}).textContent||"",pr=(c.querySelector(".price")||{}).textContent||"",im=c.querySelector("img.ph"),
-km=sb.match(/Код:\s*(.*?)(?:\.\s*Фасовка:|\.?$)/),fm=sb.match(/Фасовка:\s*(.*)$/);return mk(t,km?km[1].trim():"",fm?fm[1].trim():"",pr,im?(im.getAttribute("src")||""):"")}
+km=sb.match(/(?:Код|Коды):\s*(.*?)(?:\.\s*(?:Фасовка|Қаптама):|\.?$)/),fm=sb.match(/(?:Фасовка|Қаптама):\s*(.*)$/);return mk(t,km?km[1].trim():"",fm?fm[1].trim():"",pr,im?(im.getAttribute("src")||""):"")}
 function fromPv(pv){var t=(pv.querySelector("h1")||{}).textContent||"",cd="",pk="",dts=pv.querySelectorAll(".pvw > dl dt");[].forEach.call(dts,function(d){var v=d.nextElementSibling?d.nextElementSibling.textContent:"";if(d.textContent==="Код товара")cd=v;if(d.textContent==="Фасовка")pk=v});
 var pr=pv.querySelector(".pvw > .price"),im=pv.querySelector(".pvi")||pv.querySelector(".gal img");return mk(t,cd,pk,pr?pr.textContent:"",im?im.getAttribute("src"):"")}
 function mk(t,cd,pk,pr,img){t=t.trim();pr=pr.replace(/\s+/g," ").trim();return{k:t+"|"+pk,t:t,c:cd,f:pk,p:pr,v:num(pr),i:img&&img.indexOf("data:")!==0?img.split("?")[0]:"",q:1}}
@@ -287,4 +287,66 @@ function pop(){var pv=document.getElementById("pv");if(!pv||pv.hidden||!last)ret
  [].forEach.call(g.querySelectorAll("img"),function(i,n){i.removeAttribute("loading");i.className="";var o=last.querySelectorAll(".gal img")[n],s=o&&o.getAttribute("src");if(s)i.src=s;else if(window.ldImg&&i.getAttribute("data-img"))window.ldImg(i)});
  [].forEach.call(g.querySelectorAll(".gd i"),function(d,i){d.className=i?"":"on"});
  one.parentNode.replaceChild(g,one)}
+})();
+
+/* Язык сайта: РУС (по умолчанию) | ҚАЗ. Словарь — build/kk.json (сайт грузит /assets/kk.json только при выборе казахского, черновик — встроенный window.KK).
+   Переводится всё, что совпадает со словарём целиком; названия и описания товаров, которых нет в словаре, остаются как есть. Выбор хранится в браузере (akp_lang). */
+(function(){
+var KEY="akp_lang",LANG="ru";try{LANG=localStorage.getItem(KEY)==="kk"?"kk":"ru"}catch(e){}
+var DE=document.documentElement;
+function unhide(){DE.classList.remove("kkp")}
+/* ---- переключатель в шапке ---- */
+function sw(){[].forEach.call(document.querySelectorAll(".top-nav.brandline"),function(n){if(n.querySelector(".lng"))return;var d=document.createElement("div");d.className="lng";d.setAttribute("role","group");d.setAttribute("aria-label","Тіл / Язык");
+d.innerHTML='<button type="button" data-l="ru"'+(LANG==="ru"?' class="on" aria-pressed="true"':' aria-pressed="false"')+'>РУС</button><button type="button" data-l="kk"'+(LANG==="kk"?' class="on" aria-pressed="true"':' aria-pressed="false"')+'>ҚАЗ</button>';
+var a=n.querySelector(".abt");if(a)n.insertBefore(d,a);else n.appendChild(d)})}
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".lng button");if(!b)return;var l=b.getAttribute("data-l");if(l===LANG)return;
+try{localStorage.setItem(KEY,l)}catch(x){}
+if(l==="ru"){location.reload();return}
+LANG="kk";[].forEach.call(document.querySelectorAll(".lng button"),function(x){var on=x.getAttribute("data-l")==="kk";x.classList.toggle("on",on);x.setAttribute("aria-pressed",on)});start()});
+/* ---- перевод ---- */
+var T=null,S=null,PRE=[];
+function core(s){var t=s.replace(/\s+/g," ").trim();if(!t)return null;
+if(T.hasOwnProperty(t))return T[t];
+var m;
+if(m=t.match(/^(\d+) позици(?:я|и|й)$/))return m[1]+" тауар";
+if(m=t.match(/^Всего: (\d+)$/))return "Барлығы: "+m[1];
+if(m=t.match(/^Найдено: (\d+)$/))return "Табылды: "+m[1];
+if(m=t.match(/^Показано: (\d+)$/))return "Көрсетілді: "+m[1];
+if(m=t.match(/^← Назад к разделу «(.+)»$/))return "← «"+(core(m[1])||m[1])+"» бөліміне оралу";
+if(m=t.match(/^\/ (.+)$/)){var r=core(m[1]);return r?"/ "+r:null}
+if(m=t.match(/^Код: (.*?)(?:\. Фасовка: (.*))?$/))return "Коды: "+m[1]+(m[2]!=null?". Қаптама: "+m[2]:"");
+if(m=t.match(/^(✓ |В корзине: )(\d+) шт$/))return (m[1]==="✓ "?"✓ ":"Себетте: ")+m[2]+" дана";
+if(m=t.match(/^(\d+) шт$/))return m[1]+" дана";
+if(m=t.match(/^Перейти в корзину, товаров: (\d+)$/))return "Себетке өту, тауарлар: "+m[1];
+if(m=t.match(/^(\d+) шт\. Цены по сайту(, без позиций с ценой по запросу)?\. Окончательную сумму подтвердит менеджер\.$/))return m[1]+" дана. Бағалар сайт бойынша"+(m[2]?", бағасы сұрау бойынша тауарларсыз":"")+". Соңғы соманы менеджер растайды.";
+if(m=t.match(/^Фасовка: (.*?) · (.*)$/))return "Қаптама: "+m[1]+" · "+(core(m[2])||m[2]);
+if(m=t.match(/^(.*\d ₸) за шт$/))return m[1]+" / дана";
+if(m=t.match(/^(.*\d ₸) за (кг|комплект)$/))return m[1]+" / "+(m[2]==="кг"?"кг":"жинақ");
+if(t.indexOf(" · ")>0){var p=t.split(" · "),ch=0;p=p.map(function(x){var r=core(x);if(r!=null){ch=1;return r}return x});return ch?p.join(" · "):null}
+/* «Лаки U-POL» → «U-POL лактары» */
+for(var i=0;i<PRE.length;i++){var k=PRE[i];if(t.indexOf(k+" ")===0){var rest=t.slice(k.length+1);if(/^[A-Za-z0-9][A-Za-z0-9 ,.&+\-]*$/.test(rest))return rest+" "+S[k]}}
+return null}
+function tx(s){var r=core(s);if(r==null)return null;var a=s.match(/^\s*/)[0],b=s.match(/\s*$/)[0];return (a?" ":"")+r+(b&&s.trim()?" ":"")}
+function title(t){var m=t.match(/^(.+?) — (купить в Астане, цены|цены и наличие в Астане|каталог и цены в Астане|купить в Астане(.*)) \| Avtokraski_Pro$/);
+if(m){var n=core(m[1])||m[1];return n+" — "+(m[2].indexOf("каталог")===0?"Астанадағы каталог және бағалар":m[2].indexOf("цены и наличие")===0?"Астанадағы бағалар мен қолда бары":"Астанада сатып алу"+(m[3]?m[3].replace(", цена",", бағасы"):", бағалар"))+" | Avtokraski_Pro"}
+var r=core(t.replace(" | Avtokraski_Pro",""));return r?r+(t.indexOf(" | Avtokraski_Pro")>0?" | Avtokraski_Pro":""):null}
+var SKIP={SCRIPT:1,STYLE:1,TEXTAREA:1,INPUT:1,NOSCRIPT:1,SVG:1};
+var AT=["aria-label","placeholder","title"];
+function el(e){for(var j=0;j<AT.length;j++){var v=e.getAttribute&&e.getAttribute(AT[j]);if(v){var r=core(v);if(r!=null&&r!==v)e.setAttribute(AT[j],r)}}}
+function walk(root){if(!root)return;if(root.nodeType===3){tn(root);return}if(root.nodeType!==1||SKIP[root.nodeName.toUpperCase()]||root.closest&&root.closest(".lng"))return;
+el(root);if(root.querySelectorAll)[].forEach.call(root.querySelectorAll("[aria-label],[placeholder],[title]"),el);
+var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null,false),n,L=[];while(n=w.nextNode())L.push(n);L.forEach(tn)}
+function tn(n){var p=n.parentNode;if(!p||SKIP[p.nodeName.toUpperCase()])return;var v=n.nodeValue;if(!v||!/[А-Яа-яЁё]/.test(v))return;var r=tx(v);if(r!=null&&r!==v)n.nodeValue=r}
+var MO=null;
+function run(){DE.lang="kk";walk(document.body);var t=title(document.title);if(t)document.title=t;unhide();
+if(!MO&&window.MutationObserver){MO=new MutationObserver(function(ms){ms.forEach(function(m){if(m.type==="attributes"){el(m.target);return}[].forEach.call(m.addedNodes,walk)});sw()});
+MO.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:AT})}}
+function load(cb){if(T)return cb();var set=function(d){T=d.t;S=d.sec;PRE=Object.keys(S).sort(function(a,b){return b.length-a.length});cb()};
+if(window.KK)return set(window.KK);
+fetch("/assets/kk.json?v=5cf125a8").then(function(r){return r.json()}).then(set,unhide)}
+function start(){load(run)}
+/* при переходах в черновике шапка рисуется заново — вставляем переключатель снова */
+if(window.MutationObserver)new MutationObserver(function(){if([].some.call(document.querySelectorAll(".top-nav.brandline"),function(n){return !n.querySelector(".lng")}))sw()}).observe(document.body,{childList:true,subtree:true});
+function init(){sw();if(LANG==="kk")start();else unhide()}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
