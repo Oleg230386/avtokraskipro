@@ -23,18 +23,20 @@ if(m=t.match(/^Найдено: (\d+)$/))return "Табылды: "+m[1];
 if(m=t.match(/^Показано: (\d+)$/))return "Көрсетілді: "+m[1];
 if(m=t.match(/^← Назад к разделу «(.+)»$/))return "← «"+(core(m[1])||m[1])+"» бөліміне оралу";
 if(m=t.match(/^\/ (.+)$/)){var r=core(m[1]);return r?"/ "+r:null}
-if(m=t.match(/^Код: (.*?)(?:\. Фасовка: (.*))?$/))return "Коды: "+m[1]+(m[2]!=null?". Қаптама: "+m[2]:"");
+if(m=t.match(/^Код: (.*?)(?:\. Фасовка: (.*))?$/))return "Коды: "+m[1]+(m[2]!=null?". Қаптама: "+pk(m[2]):"");
+if(m=t.match(/^Фасовка: (.*?) · (.*)$/))return "Қаптама: "+m[1]+" · "+(core(m[2])||m[2]);
+if(m=t.match(/^(?:(.*?)\.? )?Фасовка: (.*)$/))return (m[1]?m[1].split(". ").map(function(x){return core(x)||x}).join(". ")+". ":"")+"Қаптама: "+pk(m[2]);
 if(m=t.match(/^(✓ |В корзине: )(\d+) шт$/))return (m[1]==="✓ "?"✓ ":"Себетте: ")+m[2]+" дана";
 if(m=t.match(/^(\d+) шт$/))return m[1]+" дана";
 if(m=t.match(/^Перейти в корзину, товаров: (\d+)$/))return "Себетке өту, тауарлар: "+m[1];
 if(m=t.match(/^(\d+) шт\. Цены по сайту(, без позиций с ценой по запросу)?\. Окончательную сумму подтвердит менеджер\.$/))return m[1]+" дана. Бағалар сайт бойынша"+(m[2]?", бағасы сұрау бойынша тауарларсыз":"")+". Соңғы соманы менеджер растайды.";
-if(m=t.match(/^Фасовка: (.*?) · (.*)$/))return "Қаптама: "+m[1]+" · "+(core(m[2])||m[2]);
 if(m=t.match(/^(.*\d ₸) за шт$/))return m[1]+" / дана";
 if(m=t.match(/^(.*\d ₸) за (кг|комплект)$/))return m[1]+" / "+(m[2]==="кг"?"кг":"жинақ");
 if(t.indexOf(" · ")>0){var p=t.split(" · "),ch=0;p=p.map(function(x){var r=core(x);if(r!=null){ch=1;return r}return x});return ch?p.join(" · "):null}
 /* «Лаки U-POL» → «U-POL лактары» */
 for(var i=0;i<PRE.length;i++){var k=PRE[i];if(t.indexOf(k+" ")===0){var rest=t.slice(k.length+1);if(/^[A-Za-z0-9][A-Za-z0-9 ,.&+\-]*$/.test(rest))return rest+" "+S[k]}}
 return null}
+function pk(v){return v.replace(/шт\.?/g,"дана").replace(/упак\.|уп\./g,"қаптама").replace(/рулон/g,"орам").replace(/отвердитель/g,"қатайтқыш").replace(/комплект/g,"жинақ")}
 function tx(s){var r=core(s);if(r==null)return null;var a=s.match(/^\s*/)[0],b=s.match(/\s*$/)[0];return (a?" ":"")+r+(b&&s.trim()?" ":"")}
 function title(t){var m=t.match(/^(.+?) — (купить в Астане, цены|цены и наличие в Астане|каталог и цены в Астане|купить в Астане(.*)) \| Avtokraski_Pro$/);
 if(m){var n=core(m[1])||m[1];return n+" — "+(m[2].indexOf("каталог")===0?"Астанадағы каталог және бағалар":m[2].indexOf("цены и наличие")===0?"Астанадағы бағалар мен қолда бары":"Астанада сатып алу"+(m[3]?m[3].replace(", цена",", бағасы"):", бағалар"))+" | Avtokraski_Pro"}

@@ -174,7 +174,8 @@ import hashlib
 APP_JS = open(B + '/tdv.js', encoding='utf8').read() + '\n' + open(B + '/lb.js', encoding='utf8').read() + '\n' + open(B + '/app.js', encoding='utf8').read() + '\n' + open(B + '/cart.js', encoding='utf8').read() + '\n' + open(B + '/gal.js', encoding='utf8').read() + '\n' + open(B + '/i18n.js', encoding='utf8').read()  # сайт + корзина + галерея фото
 CARDS_VER = hashlib.md5(open(SITE + '/app.txt', 'rb').read()).hexdigest()[:8]
 APP_JS = APP_JS.replace('/assets/cards.js?v=1', '/assets/cards.js?v=' + CARDS_VER)
-KK_JSON = json.dumps(json.load(open(B + '/kk.json', encoding='utf8')), ensure_ascii=False, separators=(',', ':'))  # казахский словарь, грузится только при выборе ҚАЗ
+_kk = json.load(open(B + '/kk.json', encoding='utf8')); _kk['t'].update(json.load(open(B + '/kk_products.json', encoding='utf8')))  # + названия и описания товаров
+KK_JSON = json.dumps(_kk, ensure_ascii=False, separators=(',', ':'))  # казахский словарь, грузится только при выборе ҚАЗ
 APP_JS = APP_JS.replace('/assets/kk.json?v=1', '/assets/kk.json?v=' + hashlib.md5(KK_JSON.encode('utf8')).hexdigest()[:8])
 open(OUT + '/assets/kk.json', 'w', encoding='utf8').write(KK_JSON)
 # язык: если выбран казахский — прячем страницу до перевода (без мигания русского текста), максимум 2.5 с
