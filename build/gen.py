@@ -142,7 +142,10 @@ def meta_for(pid, h1, count, chips):
                 'Avtokraski_Pro — магазин автокрасок в Астане: более 1000 позиций PPG, U-POL, RANAL, Norton, RUPES. Официальный дистрибьютор, подбор краски по коду, доставка по Казахстану и СНГ.')
     if pid == 'sovety':
         return ('Полезные советы по покраске авто — Avtokraski_Pro, Астана',
-                'Советы от Avtokraski_Pro: как подобрать и настроить краскопульт, выбрать дюзу под базу, лак и грунт, правильно мыть краскопульт.')
+                'Советы от Avtokraski_Pro: как подобрать и настроить краскопульт, выбрать дюзу под базу, лак и грунт, как выбрать полировальную машинку — роторную или эксцентриковую.')
+    if pid == 'sovety.vybor-polirovalnoy-mashinki':
+        return ('Как выбрать полировальную машинку: роторная или эксцентриковая (RUPES LH19E и LHR15 Mark V) | Avtokraski_Pro',
+                'Чем роторная полировальная машинка отличается от эксцентриковой (DA): скорость, риск прожига, голограммы. Ход 12/15/21 мм, круги и пасты RUPES по цветам, советы по полировке.')
     if pid == 'sovety.nastroyka-kraskopulta':
         return ('Как настроить краскопульт: выбор дюзы, давление, факел, мойка Walcom и Anest Iwata | Avtokraski_Pro',
                 'Какую дюзу выбрать под базу (1.3), лак (1.4), грунт (1.7), жидкую шпатлёвку и Raptor (2.0–2.5). Давление, ширина факела, подача краски и правильная мойка краскопультов Walcom и Anest Iwata.')
@@ -233,7 +236,7 @@ def page(pid, title_t, body):
     if pid.startswith('sovety.'):  # статья — разметка Article для поиска
         ld += '<script type="application/ld+json">%s</script>' % json.dumps(
             {"@context": "https://schema.org", "@type": "Article", "headline": h1[:110], "description": desc, "url": url,
-             "inLanguage": "ru", "image": DOMAIN + "/img/slimk-1.webp",
+             "inLanguage": "ru", "image": DOMAIN + ("/img/rupes-lhr15v-3.webp" if "polirov" in pid else "/img/slimk-1.webp"),
              "author": {"@type": "Organization", "name": "Avtokraski_Pro"},
              "publisher": {"@type": "Organization", "name": "Avtokraski_Pro", "logo": {"@type": "ImageObject", "url": DOMAIN + "/img/logo.webp"}}}, ensure_ascii=False)
     hsc = ''
@@ -343,6 +346,7 @@ _dj = re.search(r'var DOCS=(\{.*\});$', open(B + '/app.js', encoding='utf8').rea
 PP_DOCS = json.loads(re.sub(r'([{,])(pdf|pg|src|rows|hard):', r'\1"\2":', _dj))
 
 TIPB = re.search(r'<a class="tipb".*?</a>', T, re.S).group(0)  # кнопка «Полезные советы» (из шаблона раздела краскопультов)
+TIPB2 = re.search(r'<a class="tipb" href="#sovety.vybor-polirovalnoy-mashinki".*?</a>', T, re.S).group(0)  # совет по полировальным машинкам
 
 RELM = {"Краскопульты":["Лаки","Разбавители","Грунты","Ленты и маскировка","Абразивы","Прочие материалы"],"Лаки":["Разбавители","Краскопульты","Абразивы","Ленты и маскировка","Автохимия и полировка"],"Грунты":["Разбавители","Шпатлёвки","Абразивы","Краскопульты","Ленты и маскировка"],"Шпатлёвки":["Абразивы","Грунты","Прочие материалы","Ленты и маскировка"],"Разбавители":["Лаки","Грунты","Краскопульты","Ленты и маскировка"],"Абразивы":["Шпатлёвки","Грунты","Автохимия и полировка","Ленты и маскировка"],"Ленты и маскировка":["Абразивы","Лаки","Краскопульты","Прочие материалы"],"Аэрозоли":["Абразивы","Ленты и маскировка","Прочие материалы","Аэрозоли"],"Автохимия и полировка":["Автохимия и полировка","Абразивы","Оборудование"],"Оборудование":["Абразивы","Краскопульты","Оборудование","Ленты и маскировка","Автохимия и полировка"],"Прочие материалы":["Абразивы","Ленты и маскировка","Лаки","Разбавители"],"Эмаль для спецтехники и металлоконструкций":["Разбавители","Краскопульты","Грунты","Абразивы"],"Изделия на 3D-принтере":["Абразивы","Шпатлёвки","Оборудование","Прочие материалы"]}
 import random as _rnd
@@ -416,6 +420,7 @@ def product_page(sl):
             + ('<a class="btn" href="%s" target="_blank" rel="noopener">Узнать цену и наличие</a>' % (wa_href or ('https://wa.me/77771187355?text=' + urllib.parse.quote('Здравствуйте! Интересует товар: ' + ti + '. Подскажите цену и наличие.'))))
             + ('<a class="shb" href="https://wa.me/?text=%s" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%%;box-sizing:border-box;margin:10px 0 0;padding:14px;border:2px solid #25d366;border-radius:12px;background:#fff;color:#128c4b;font-weight:700;font-size:16px;text-decoration:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2s.2-1.1.1-1.2z"/></svg>Поделиться в WhatsApp</a>' % urllib.parse.quote(ti + '\nhttps://avtokraskipro.kz/tovar/' + sl + '/'))
             + (TIPB if (re.search(r'(?i)краскопульт', ti) or cat == 'Краскопульты') else '')
+            + (TIPB2 if re.search(r'(?i)полировальн\w* машинк', ti) or cat == 'Полировальные машинки' else '')
             + rel_block(i, cat, ti)
             + '<a class="pvb pvb2" href="%s">← Вернуться к каталогу</a>' % path_of(back)
             + '</div><footer data-f></footer>')
