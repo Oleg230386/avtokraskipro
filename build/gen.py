@@ -142,7 +142,10 @@ def meta_for(pid, h1, count, chips):
                 'Avtokraski_Pro — магазин автокрасок в Астане: более 1000 позиций PPG, U-POL, RANAL, Norton, RUPES. Официальный дистрибьютор, подбор краски по коду, доставка по Казахстану и СНГ.')
     if pid == 'sovety':
         return ('Полезные советы по покраске авто — Avtokraski_Pro, Астана',
-                'Советы от Avtokraski_Pro: как подобрать и настроить краскопульт, выбрать дюзу под базу, лак и грунт, как выбрать полировальную машинку — роторную или эксцентриковую, чем отличаются лаки MS, HS и UHS/VHS, как выбрать автомобильную шпатлёвку.')
+                'Советы от Avtokraski_Pro: как подобрать и настроить краскопульт, выбрать дюзу под базу, лак и грунт, как выбрать полировальную машинку — роторную или эксцентриковую, чем отличаются лаки MS, HS и UHS/VHS, как выбрать автомобильную шпатлёвку, сколько нужно защитного покрытия Raptor.')
+    if pid == 'sovety.raptor-skolko-nuzhno':
+        return ('U-POL Raptor: сколько нужно на пороги, кузов пикапа, Land Cruiser — расход и цены | Avtokraski_Pro',
+                'Сколько защитного покрытия U-POL Raptor нужно на пороги, кузов пикапа и Land Cruiser. Расход и шагрень, аэрозоль 1K или 2K, пистолеты GUN/VN и GUN/1, цены в Астане.')
     if pid == 'sovety.vybor-shpatlevki':
         return ('Как выбрать шпатлёвку для авто: виды и для чего каждая нужна (U-POL) | Avtokraski_Pro',
                 'Какую автомобильную шпатлёвку выбрать: со стекловолокном, алюминиевая, карбоновая, универсальная, доводочная, облегчённая, для пластика и жидкая. Порядок слоёв, таблица выбора, шпатлёвки U-POL. Астана.')
@@ -233,10 +236,6 @@ def page(pid, title_t, body):
     ld = ''
     if pid == 'home':
         ld = '<script type="application/ld+json">%s</script>' % json.dumps(LD_HOME, ensure_ascii=False)
-        faq = [{"@type": "Question", "name": strip_tags(q_), "acceptedAnswer": {"@type": "Answer", "text": strip_tags(a_)}}
-               for q_, a_ in re.findall(r'<details class="faq"><summary>(.*?)</summary><p>(.*?)</p></details>', body, re.S)]
-        if faq:  # блок «Частые вопросы» на главной → разметка FAQPage
-            ld += '<script type="application/ld+json">%s</script>' % json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faq}, ensure_ascii=False)
     else:
         crumbs = re.search(r'<nav class="bc"[^>]*>(.*?)</nav>', body, re.S)
         if crumbs:
@@ -247,10 +246,14 @@ def page(pid, title_t, body):
             items.append({"@type": "ListItem", "position": len(items) + 1, "name": h1, "item": url})
             ld = '<script type="application/ld+json">%s</script>' % json.dumps(
                 {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": items}, ensure_ascii=False)
+    faq = [{"@type": "Question", "name": strip_tags(q_), "acceptedAnswer": {"@type": "Answer", "text": strip_tags(a_)}}
+           for q_, a_ in re.findall(r'<details class="faq"><summary>(.*?)</summary><p>(.*?)</p></details>', body, re.S)]
+    if faq:  # блоки «Частые вопросы» (главная, статьи) → разметка FAQPage
+        ld += '<script type="application/ld+json">%s</script>' % json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faq}, ensure_ascii=False)
     if pid.startswith('sovety.'):  # статья — разметка Article для поиска
         ld += '<script type="application/ld+json">%s</script>' % json.dumps(
             {"@context": "https://schema.org", "@type": "Article", "headline": h1[:110], "description": desc, "url": url,
-             "inLanguage": "ru", "image": DOMAIN + ("/img/p0093.webp" if "shpatlev" in pid else "/img/rupes-lhr15v-3.webp" if "polirov" in pid else "/img/up-s2081.webp" if "laki" in pid else "/img/slimk-1.webp"),
+             "inLanguage": "ru", "image": DOMAIN + ("/img/raptor-rlb-box.webp" if "raptor" in pid else "/img/p0093.webp" if "shpatlev" in pid else "/img/rupes-lhr15v-3.webp" if "polirov" in pid else "/img/up-s2081.webp" if "laki" in pid else "/img/slimk-1.webp"),
              "author": {"@type": "Organization", "name": "Avtokraski_Pro"},
              "publisher": {"@type": "Organization", "name": "Avtokraski_Pro", "logo": {"@type": "ImageObject", "url": DOMAIN + "/img/logo.webp"}}}, ensure_ascii=False)
     hsc = ''
@@ -363,6 +366,7 @@ TIPB = re.search(r'<a class="tipb".*?</a>', T, re.S).group(0)  # кнопка «
 TIPB2 = re.search(r'<a class="tipb" href="#sovety.vybor-polirovalnoy-mashinki".*?</a>', T, re.S).group(0)  # совет по полировальным машинкам
 TIPB3 = re.search(r'<a class="tipb" href="#sovety.laki-ms-hs-uhs-vhs".*?</a>', T, re.S).group(0)  # совет по лакам
 TIPB4 = re.search(r'<a class="tipb" href="#sovety.vybor-shpatlevki".*?</a>', T, re.S).group(0)  # совет по шпатлёвкам
+TIPB5 = re.search(r'<a class="tipb" href="#sovety.raptor-skolko-nuzhno".*?</a>', T, re.S).group(0)  # совет по Raptor
 
 RELM = {"Краскопульты":["Лаки","Разбавители","Грунты","Ленты и маскировка","Абразивы","Прочие материалы"],"Лаки":["Разбавители","Краскопульты","Абразивы","Ленты и маскировка","Автохимия и полировка"],"Грунты":["Разбавители","Шпатлёвки","Абразивы","Краскопульты","Ленты и маскировка"],"Шпатлёвки":["Абразивы","Грунты","Прочие материалы","Ленты и маскировка"],"Разбавители":["Лаки","Грунты","Краскопульты","Ленты и маскировка"],"Абразивы":["Шпатлёвки","Грунты","Автохимия и полировка","Ленты и маскировка"],"Ленты и маскировка":["Абразивы","Лаки","Краскопульты","Прочие материалы"],"Аэрозоли":["Абразивы","Ленты и маскировка","Прочие материалы","Аэрозоли"],"Автохимия и полировка":["Автохимия и полировка","Абразивы","Оборудование"],"Оборудование":["Абразивы","Краскопульты","Оборудование","Ленты и маскировка","Автохимия и полировка"],"Прочие материалы":["Абразивы","Ленты и маскировка","Лаки","Разбавители"],"Эмаль для спецтехники и металлоконструкций":["Разбавители","Краскопульты","Грунты","Абразивы"],"Изделия на 3D-принтере":["Абразивы","Шпатлёвки","Оборудование","Прочие материалы"]}
 import random as _rnd
@@ -439,6 +443,7 @@ def product_page(sl):
             + (TIPB2 if re.search(r'(?i)полировальн\w* машинк', ti) or cat == 'Полировальные машинки' else '')
             + (TIPB3 if cat == 'Лаки' else '')
             + (TIPB4 if re.search(r'(?i)шпат[леё]*вк|шпак[леё]*вк', ti) or cat == 'Шпатлёвки' else '')
+            + (TIPB5 if re.search(r'(?i)raptor', ti) else '')
             + rel_block(i, cat, ti)
             + '<a class="pvb pvb2" href="%s">← Вернуться к каталогу</a>' % path_of(back)
             + '</div><footer data-f></footer>')
