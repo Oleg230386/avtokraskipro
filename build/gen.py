@@ -233,6 +233,10 @@ def page(pid, title_t, body):
     ld = ''
     if pid == 'home':
         ld = '<script type="application/ld+json">%s</script>' % json.dumps(LD_HOME, ensure_ascii=False)
+        faq = [{"@type": "Question", "name": strip_tags(q_), "acceptedAnswer": {"@type": "Answer", "text": strip_tags(a_)}}
+               for q_, a_ in re.findall(r'<details class="faq"><summary>(.*?)</summary><p>(.*?)</p></details>', body, re.S)]
+        if faq:  # блок «Частые вопросы» на главной → разметка FAQPage
+            ld += '<script type="application/ld+json">%s</script>' % json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faq}, ensure_ascii=False)
     else:
         crumbs = re.search(r'<nav class="bc"[^>]*>(.*?)</nav>', body, re.S)
         if crumbs:
