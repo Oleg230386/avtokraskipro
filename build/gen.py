@@ -175,6 +175,9 @@ LD_HOME = {
     "telephone": "+77771187355",
     "address": {"@type": "PostalAddress", "streetAddress": "ул. Талапкерская, 24а, 2 этаж",
                 "addressLocality": "Астана", "postalCode": "Z11A2Y1", "addressCountry": "KZ"},
+    "openingHoursSpecification": [
+        {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "09:00", "closes": "19:00"},
+        {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday", "Sunday"], "opens": "10:00", "closes": "18:00"}],
     "areaServed": ["Казахстан"], "sameAs": ["https://www.instagram.com/avtokraski_pro/"],
     "description": "Автокраски, лаки, грунты, абразивы и оборудование для кузовного ремонта в Астане."
 }
@@ -509,6 +512,7 @@ open(OUT + '/404.html', 'w', encoding='utf8').write(nf)
 
 open(OUT + '/.htaccess', 'w').write('''# Avtokraski_Pro
 ErrorDocument 404 /404.html
+AddCharset UTF-8 .txt
 DirectoryIndex index.html
 
 # Старые адреса товаров после переименования -> новые (сохраняем позиции в поиске)
@@ -547,6 +551,7 @@ ExpiresByType text/html "access plus 0 seconds"
 print('done')
 shutil.copy(B + '/google099ad330cd3fe9d6.html', OUT + '/google099ad330cd3fe9d6.html')
 shutil.copy(B + '/yandex_6d6343c53e2e252c.html', OUT + '/yandex_6d6343c53e2e252c.html')
+shutil.copy(B + '/llms.txt', OUT + '/llms.txt')  # «паспорт» сайта для ИИ-поисковиков
 open(OUT + '/assets/app.js', 'w', encoding='utf8').write(APP_JS)
 os.makedirs(OUT + '/docs', exist_ok=True)
 shutil.copy(B + '/D8125-tehkarta.pdf', OUT + '/docs/D8125-tehkarta.pdf')
