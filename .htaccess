@@ -13,6 +13,8 @@ Redirect 301 /tovar/w093013-kraskopult-slim-kombat-pro-halo-1-3/ https://avtokra
 Redirect 301 /tovar/w093014-kraskopult-slim-kombat-pro-halo-1-4/ https://avtokraskipro.kz/tovar/w093014-kraskopult-slim-kombat-pro-halo-1-3-1-4-1-7-1-9-2-2-2-5/
 Redirect 301 /tovar/w093013-gang-kraskopult-slim-kombat-pro-gang-hte-halo-1-3/ https://avtokraskipro.kz/tovar/w093013-gang-kraskopult-slim-kombat-pro-gang-hte-halo-1-3-1-4-1-7-1-9/
 Redirect 301 /tovar/w013013-kraskopult-genesi-carbonio-360-evo-clear-hte-1-3/ https://avtokraskipro.kz/tovar/w013013-kraskopult-genesi-carbonio-360-evo-clear-halo-hte-1-2-1-3-1-4/
+Redirect 301 /tovar/w010013-rem-komplekt-genesi-carbonio-360-evo-clear-hte-1-3/ https://avtokraskipro.kz/tovar/w010013-rem-komplekt-genesi-carbonio-360-evo-clear-halo-hte-1-2-1-3-1/
+Redirect 301 /tovar/w020013-rem-komplekt-genesi-carbonio-360-evo-base-hte-1-3/ https://avtokraskipro.kz/tovar/w020013-rem-komplekt-genesi-carbonio-360-evo-base-halo-hte-1-2-1-3-1-4/
 
 # Перенаправление на https: включить (убрать # в 4 строках ниже) после установки SSL-сертификата
 #RewriteEngine On
