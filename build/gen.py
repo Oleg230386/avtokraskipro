@@ -176,8 +176,7 @@ LD_HOME = {
     "address": {"@type": "PostalAddress", "streetAddress": "ул. Талапкерская, 24а, 2 этаж",
                 "addressLocality": "Астана", "postalCode": "Z11A2Y1", "addressCountry": "KZ"},
     "openingHoursSpecification": [
-        {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "09:00", "closes": "19:00"},
-        {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday", "Sunday"], "opens": "10:00", "closes": "18:00"}],
+        {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "09:00", "closes": "19:00"}],
     "areaServed": ["Казахстан"], "sameAs": ["https://www.instagram.com/avtokraski_pro/"],
     "description": "Автокраски, лаки, грунты, абразивы и оборудование для кузовного ремонта в Астане."
 }
