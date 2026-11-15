@@ -509,6 +509,7 @@ Redirect 301 /tovar/w093013-gang-kraskopult-slim-kombat-pro-gang-hte-halo-1-3/ h
 Redirect 301 /tovar/w013013-kraskopult-genesi-carbonio-360-evo-clear-hte-1-3/ https://avtokraskipro.kz/tovar/w013013-kraskopult-genesi-carbonio-360-evo-clear-halo-hte-1-2-1-3-1-4/
 Redirect 301 /tovar/w010013-rem-komplekt-genesi-carbonio-360-evo-clear-hte-1-3/ https://avtokraskipro.kz/tovar/w010013-rem-komplekt-genesi-carbonio-360-evo-clear-halo-hte-1-2-1-3-1/
 Redirect 301 /tovar/w020013-rem-komplekt-genesi-carbonio-360-evo-base-hte-1-3/ https://avtokraskipro.kz/tovar/w020013-rem-komplekt-genesi-carbonio-360-evo-base-halo-hte-1-2-1-3-1-4/
+Redirect 301 /tovar/50160-b-moechnyj-pistolet-austromec-hydrojet/ https://avtokraskipro.kz/tovar/50160-b-moechnyj-pistolet-asturomec-hydrojet/
 
 # Перенаправление на https: включить (убрать # в 4 строках ниже) после установки SSL-сертификата
 #RewriteEngine On
