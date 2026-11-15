@@ -1,5 +1,6 @@
 # Avtokraski_Pro
 ErrorDocument 404 /404.html
+AddCharset UTF-8 .txt
 DirectoryIndex index.html
 
 # Старые адреса товаров после переименования -> новые (сохраняем позиции в поиске)
