@@ -175,6 +175,8 @@ LD_HOME = {
     "telephone": "+77771187355",
     "address": {"@type": "PostalAddress", "streetAddress": "ул. Талапкерская, 24а, 2 этаж",
                 "addressLocality": "Астана", "postalCode": "Z11A2Y1", "addressCountry": "KZ"},
+    "geo": {"@type": "GeoCoordinates", "latitude": 51.184465, "longitude": 71.373093},
+    "hasMap": "https://2gis.kz/astana/firm/70000001075168468",
     "openingHoursSpecification": [
         {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "09:00", "closes": "19:00"}],
     "areaServed": ["Казахстан"], "sameAs": ["https://www.instagram.com/avtokraski_pro/"],
