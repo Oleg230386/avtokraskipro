@@ -66,5 +66,97 @@
  "WELD": {
   "h": "0d01bbad184909d5542be929cd1200fd",
   "pg": 2
+ },
+ "BAGDOL": {
+  "h": "56f640cb74b9211cf693ceee2d5f36ca",
+  "pg": 2
+ },
+ "BAGDOLSG": {
+  "h": "b6c7432ed1846e1f2b90a156d57aa243",
+  "pg": 2
+ },
+ "CCUP": {
+  "h": "83d4fb9be60b3cf40d1cd8b80a17adc1",
+  "pg": 2
+ },
+ "DOLMA": {
+  "h": "09304b0661ce036959b7e3ee18d2717c",
+  "pg": 2
+ },
+ "DOLMD": {
+  "h": "3c5909f70b9995ea20cde726d37c63f9",
+  "pg": 2
+ },
+ "DOLMP": {
+  "h": "bc9dd9ea5f5a10d51c6b17f7e05f544f",
+  "pg": 2
+ },
+ "EXSOF": {
+  "h": "f312212632a9fe1362571d82cc3c8786",
+  "pg": 2
+ },
+ "FANT": {
+  "h": "c3e1f18337d14df3443cd612feace947",
+  "pg": 2
+ },
+ "FIB": {
+  "h": "23fd9659ce1520b8d4c0a87746708d75",
+  "pg": 2
+ },
+ "FIBL": {
+  "h": "d1c200c852543cdb5b7eb681fa7a81ac",
+  "pg": 2
+ },
+ "GRAVITEX": {
+  "h": "b0833b03fa3f8ad13cf7933f7ae1368d",
+  "pg": 2
+ },
+ "METL": {
+  "h": "9aa0dbee2d9b9b7c68887715b84ef10c",
+  "pg": 2
+ },
+ "MIC": {
+  "h": "93b2c56e4ae4263787e678b9c7b7dd96",
+  "pg": 2
+ },
+ "PLASX6": {
+  "h": "9b782398714ef3d259027f70c38abc86",
+  "pg": 2
+ },
+ "REFACE": {
+  "h": "8a76ffb5d0f747fde13e4bf7fc9459a5",
+  "pg": 3
+ },
+ "RLBAL": {
+  "h": "d514f56f8fd8465549a47aa5846bc267",
+  "pg": 3
+ },
+ "S2000": {
+  "h": "09384b28b9620859177cfcfcc89eae5a",
+  "pg": 2
+ },
+ "S2001": {
+  "h": "443b1259588d475c1587c7cb2cd7c7da",
+  "pg": 2
+ },
+ "S2044": {
+  "h": "e3449f8e99d7b971f2354cded64c6322",
+  "pg": 2
+ },
+ "SMC": {
+  "h": "f6298f5994fb43d712689c9d4619d712",
+  "pg": 2
+ },
+ "UPEGF": {
+  "h": "3c9007c1bcb3af2ee019cfdaaf6ad4c8",
+  "pg": 2
+ },
+ "UPEGM": {
+  "h": "f7f3c6065d2b15bba8f85b2054fc3d9c",
+  "pg": 2
+ },
+ "UPOLD": {
+  "h": "639eadf901e8e7f9fb07ba7bbd865b84",
+  "pg": 2
  }
 }
