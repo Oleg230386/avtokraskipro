@@ -31,6 +31,23 @@ for f in os.listdir(BIGD):
     if f.startswith('b') and int(f[1:-5]) >= len(packs): os.remove(os.path.join(BIGD, f))
 js = 'window.BIGI=' + json.dumps(BIGI, separators=(',', ':')) + ';\n' + js
 print('big packs', len(packs), len(BIGI))
+# Страницы переводных техкарт (build/tds_ru) в черновике: в артефакте мало места под файлы, поэтому webp-страницы
+# собираются в пакеты site_docs/t<N>.json (в артефакте docs/t<N>.json), карта страница→пакет — window.TDP (tdv.js).
+TDD = os.path.join(ROOT, 'site_docs'); os.makedirs(TDD, exist_ok=True)
+_tn = sorted(set(v['pdf'][:-4] for v in json.load(open(B + '/tds_ru/docs.json', encoding='utf8')).values()))
+_tf = sorted(f for f in os.listdir(B + '/docs') if f.endswith('.webp') and f.rsplit('-', 1)[0] in _tn)
+tpk, TDP, tsz = [{}], {}, 0
+for f in _tf:
+    d = 'data:image/webp;base64,' + base64.b64encode(open(B + '/docs/' + f, 'rb').read()).decode()
+    if tsz and tsz + len(d) > 650000: tpk.append({}); tsz = 0
+    tpk[-1][f] = d; tsz += len(d); TDP[f] = len(tpk) - 1
+for n, pk in enumerate(tpk):
+    p_ = os.path.join(TDD, 't%d.json' % n); s_ = json.dumps(pk, separators=(',', ':'))
+    if not os.path.exists(p_) or open(p_).read() != s_: open(p_, 'w').write(s_)
+for f in os.listdir(TDD):
+    if f.startswith('t') and int(f[1:-5]) >= len(tpk): os.remove(os.path.join(TDD, f))
+js = 'window.TDP=' + json.dumps(TDP, separators=(',', ':')) + ';\n' + js
+print('tds packs', len(tpk), len(TDP))
 app = T + '\x00' + js
 open(SITE + '/app.txt', 'w', encoding='utf8').write(app)
 z = base64.b64encode(gzip.compress(app.encode('utf8'), 9, mtime=0)).decode()

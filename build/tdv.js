@@ -14,8 +14,9 @@ function build(){v=document.createElement("div");v.id="tdv";v.hidden=true;v.setA
 v.innerHTML='<div class="tdb"><button type="button" class="tdx">← Назад к товару</button><a class="tdd" target="_blank" rel="noopener" download>Скачать PDF</a></div><div class="tds2"></div>';
 document.body.appendChild(v);
 v.addEventListener("click",function(e){if(e.target.closest(".tdx,.tdf button")){e.preventDefault();e.stopPropagation();closeV()}});}
+var TPC={};function tdpFill(b){[].forEach.call(b.querySelectorAll("img"),function(im){var f=im.getAttribute("src").split("/").pop();if(!(f in TDP))return;var n=TDP[f];im.removeAttribute("src");(TPC[n]=TPC[n]||fetch("docs/t"+n+".json").then(function(r){return r.json()})).then(function(p){im.src=p[f]})})}
 function openV(pdf,n){if(!v)build();var b=v.querySelector(".tds2"),h="";for(var i=1;i<=n;i++)h+='<img src="'+pdf.replace(/\.pdf$/,"-"+i+".webp")+'" alt="Техкарта, страница '+i+'" loading="'+(i<3?"eager":"lazy")+'">';
-b.innerHTML=h+'<div class="tdf"><button type="button">← Назад к товару</button></div>';b.scrollTop=0;v.querySelector(".tdd").setAttribute("href",pdf);v.hidden=false;
+b.innerHTML=h+'<div class="tdf"><button type="button">← Назад к товару</button></div>';if(window.TDP)tdpFill(b);b.scrollTop=0;v.querySelector(".tdd").setAttribute("href",pdf);v.hidden=false;
 document.documentElement.style.overflow="hidden";try{history.pushState({tdv:1},"");pushed=true}catch(e){pushed=false}}
 function hideV(){if(v){v.hidden=true;v.querySelector(".tds2").innerHTML=""}document.documentElement.style.overflow=""}
 function closeV(){if(!v||v.hidden)return;if(pushed){pushed=false;hideV();skip=true;try{history.back()}catch(e){skip=false}}else hideV()}
