@@ -572,6 +572,9 @@ os.makedirs(OUT + '/docs', exist_ok=True)
 shutil.copy(B + '/D8125-tehkarta.pdf', OUT + '/docs/D8125-tehkarta.pdf')
 shutil.copy(B + '/emakout-7320v-tehkarta.pdf', OUT + '/docs/emakout-7320v-tehkarta.pdf')
 shutil.copy(B + '/emakout-5335sp-tehkarta.pdf', OUT + '/docs/emakout-5335sp-tehkarta.pdf')
+os.makedirs(OUT + '/docs/sovety', exist_ok=True)
+for _f in glob.glob(B + '/sovety_pdf/*.pdf'):  # PDF-версии статей «Полезные советы» (делает pdf_sovety.py)
+    shutil.copy(_f, OUT + '/docs/sovety/' + os.path.basename(_f))
 for _f in glob.glob(B + '/docs/*.webp') + glob.glob(B + '/docs/*.pdf'):  # страницы техкарт для просмотра на сайте
     shutil.copy(_f, OUT + '/docs/' + os.path.basename(_f))
 # IndexNow (Яндекс, Bing): файл-ключ подтверждает, что сайт наш

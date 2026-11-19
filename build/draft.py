@@ -4,6 +4,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 B = os.path.join(ROOT, 'build'); SITE = os.path.join(ROOT, 'site')
 D = json.load(open(B + '/data.json', encoding='utf8'))
 T = open(B + '/templates.html', encoding='utf8').read()
+import re
+T = re.sub(r' download="[^"]*"', '', T.replace('href="/docs/sovety/', 'href="docs/sovety/'))  # PDF статей в черновике лежат в docs/sovety/
 js = open(B + '/draft_app.js', encoding='utf8').read()
 J = lambda v: json.dumps(v, ensure_ascii=False)
 for k in ('IM', 'NAV', 'FOOT', 'ATT', 'TOP', 'CD'):
