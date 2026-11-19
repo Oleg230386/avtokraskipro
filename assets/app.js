@@ -14,8 +14,9 @@ function build(){v=document.createElement("div");v.id="tdv";v.hidden=true;v.setA
 v.innerHTML='<div class="tdb"><button type="button" class="tdx">← Назад к товару</button><a class="tdd" target="_blank" rel="noopener" download>Скачать PDF</a></div><div class="tds2"></div>';
 document.body.appendChild(v);
 v.addEventListener("click",function(e){if(e.target.closest(".tdx,.tdf button")){e.preventDefault();e.stopPropagation();closeV()}});}
+var TPC={};function tdpFill(b){[].forEach.call(b.querySelectorAll("img"),function(im){var f=im.getAttribute("src").split("/").pop();if(!(f in TDP))return;var n=TDP[f];im.removeAttribute("src");(TPC[n]=TPC[n]||fetch("docs/t"+n+".json").then(function(r){return r.json()})).then(function(p){im.src=p[f]})})}
 function openV(pdf,n){if(!v)build();var b=v.querySelector(".tds2"),h="";for(var i=1;i<=n;i++)h+='<img src="'+pdf.replace(/\.pdf$/,"-"+i+".webp")+'" alt="Техкарта, страница '+i+'" loading="'+(i<3?"eager":"lazy")+'">';
-b.innerHTML=h+'<div class="tdf"><button type="button">← Назад к товару</button></div>';b.scrollTop=0;v.querySelector(".tdd").setAttribute("href",pdf);v.hidden=false;
+b.innerHTML=h+'<div class="tdf"><button type="button">← Назад к товару</button></div>';if(window.TDP)tdpFill(b);b.scrollTop=0;v.querySelector(".tdd").setAttribute("href",pdf);v.hidden=false;
 document.documentElement.style.overflow="hidden";try{history.pushState({tdv:1},"");pushed=true}catch(e){pushed=false}}
 function hideV(){if(v){v.hidden=true;v.querySelector(".tds2").innerHTML=""}document.documentElement.style.overflow=""}
 function closeV(){if(!v||v.hidden)return;if(pushed){pushed=false;hideV();skip=true;try{history.back()}catch(e){skip=false}}else hideV()}
@@ -91,7 +92,7 @@ document.addEventListener("keydown",function(e){if(!v||v.hidden)return;if(e.key=
 (function(){
 var W="77771187355",ATT="Узнать цену и наличие";function u(t){return"https://wa.me/"+W+"?text="+encodeURIComponent(t)}
 function setImg(i){var k=i.getAttribute("data-img");if(k){i.setAttribute("src","/img/"+k+".webp");i.removeAttribute("data-img")}}
-var CDL=null;function loadCD(cb){if(window.CD){cb();return}if(!CDL){CDL=[];var s=document.createElement("script");s.src="/assets/cards.js?v=7389e425";s.onload=function(){var q=CDL;CDL=null;q.forEach(function(f){f()})};document.head.appendChild(s)}CDL.push(cb)}
+var CDL=null;function loadCD(cb){if(window.CD){cb();return}if(!CDL){CDL=[];var s=document.createElement("script");s.src="/assets/cards.js?v=e9fbf366";s.onload=function(){var q=CDL;CDL=null;q.forEach(function(f){f()})};document.head.appendChild(s)}CDL.push(cb)}
 var app=document.getElementById("app");
 function mark(root){[].forEach.call(root.querySelectorAll(".card"),function(c){var tx=function(q){var e=c.querySelector(q);return e?e.textContent:""};c.setAttribute("data-t",(tx(".top")+" "+tx("h2")+" "+tx(".meta")+" "+tx(".sub")).toLowerCase())})}
 mark(app);
