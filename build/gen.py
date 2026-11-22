@@ -184,7 +184,8 @@ LD_HOME = {
     "geo": {"@type": "GeoCoordinates", "latitude": 51.184465, "longitude": 71.373093},
     "hasMap": "https://2gis.kz/astana/firm/70000001075168468",
     "openingHoursSpecification": [
-        {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "09:00", "closes": "19:00"}],
+        {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "09:00", "closes": "19:00"},
+        {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday", "Sunday"], "opens": "10:00", "closes": "18:00"}],
     "areaServed": ["Казахстан"], "sameAs": ["https://www.instagram.com/avtokraski_pro/"],
     "description": "Автокраски, лаки, грунты, абразивы и оборудование для кузовного ремонта в Астане."
 }
