@@ -1,4 +1,4 @@
-import json, re, os, io, base64, html, shutil, glob, urllib.parse, datetime
+import json, re, os, sys, io, base64, html, shutil, glob, urllib.parse, datetime
 
 # Google Analytics (счётчик посещаемости) + события-заявки: WhatsApp, корзина
 GA_ID = 'G-YW5ERFQ46T'
@@ -76,7 +76,7 @@ def card_html(c):
     sb = strip_tags(m.group(1)) if m else ''
     k = re.match(r'^Код: (.*?)(?:\. Фасовка:.*)?$', sb)
     cd = k.group(1) if k else None
-    nm = t[len(cd) + 3:] if cd and t.startswith(cd + ' · ') else t
+    nm = t[len(cd) + 3:] if cd and t.startswith(cd + ' · ') else (t.rsplit(' · ', 1)[0] if cd and ' · ' in t and t.endswith(cd) else t)
     w = 'Здравствуйте! Интересует товар: ' + nm + (' (код ' + cd + ')' if cd else '') + '. Подскажите цену и наличие.'
     c = c.replace('<a class="btn wa"></a>',
                   '<a class="btn wa" href="%s" target="_blank" rel="noopener">%s</a>' % (html.escape(wa(w)), ATT))
@@ -106,7 +106,7 @@ def slider():
     for code in TOP:
         for i, c in enumerate(CD):
             m = re.search(r'<h2>([\s\S]*?)</h2>', c)
-            if m and (m.group(1).startswith(code + ' · ') or m.group(1) == code):
+            if m and (m.group(1).startswith(code + ' · ') or m.group(1) == code or (' · ' in m.group(1) and (m.group(1).endswith(' · ' + code) or m.group(1).endswith(' ' + code)))):
                 ids.append(i); break
     h = ('<a class="hs-brand" href="/"><img src="/img/ig-av.webp" alt="" width="32" height="32">'
          '<b>AVTOKRASKI<span>_PRO</span></b><small>· популярные товары</small></a><div class="hs-vp"><div class="hs-tr">')
@@ -306,6 +306,8 @@ def card_key(c):
     pr = (re.search(r'class="price">(.*?)</div>', c) or [None, ''])[1]
     return h2 + '|' + pr
 
+_fz = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'slugs.json')
+FROZEN = json.load(open(_fz, encoding='utf8')) if os.path.exists(_fz) else {}  # номер карточки -> адрес /tovar/<slug>/
 PP = {}        # card index -> slug
 PP_HOME = {}   # slug -> (card index, [(pid, name), ...] breadcrumbs)
 _used = {}
@@ -322,6 +324,14 @@ for sec in PP_SECTIONS:
         k = card_key(c)
         if k in _used:
             PP[i] = _used[k]; continue
+        if str(i) in FROZEN and FROZEN[str(i)] in PP_HOME:
+            PP[i] = FROZEN[str(i)]; _used[k] = PP[i]; continue
+        if str(i) in FROZEN:  # адрес страницы закреплён (22.11.2026: названия переставлены, адреса не меняются)
+            sl = FROZEN[str(i)]
+            _c = [p for p in subs if i in tpl_ids(p)]
+            sub = min(_c, key=lambda p: len(tpl_ids(p))) if _c else None
+            crumbs = [(sec, tpl_h1(sec))] + ([(sub, tpl_h1(sub))] if sub else [])
+            PP[i] = sl; _used[k] = sl; PP_HOME[sl] = (i, crumbs); continue
         t = strip_tags(re.search(r'<h2>(.*?)</h2>', c, re.S).group(1))
         sl = slugify(t.replace(' (мирлон)', ''))  # «(мирлон)» в названии не меняет адрес страницы
         if sl in PP_HOME:  # то же название, другая фасовка — добавить фасовку в адрес
@@ -336,8 +346,12 @@ for sec in PP_SECTIONS:
         PP[i] = sl; _used[k] = sl; PP_HOME[sl] = (i, crumbs)
 # та же карточка в других разделах тоже ведёт на страницу товара
 for i, c in enumerate(CD):
-    if c and i not in PP and card_key(c) in _used:
+    if c and i not in PP and str(i) in FROZEN and FROZEN[str(i)] in PP_HOME:
+        PP[i] = FROZEN[str(i)]
+    elif c and i not in PP and card_key(c) in _used:
         PP[i] = _used[card_key(c)]
+if os.environ.get('DUMP_SLUGS'):
+    json.dump({str(i): v for i, v in sorted(PP.items())}, open(_fz, 'w', encoding='utf8'), ensure_ascii=False, indent=0); sys.exit(0)
 
 _card_html0 = card_html
 def card_html(c, _i=None):
@@ -461,6 +475,7 @@ def product_page(sl):
     body = fix_links(body)
     url = DOMAIN + '/tovar/%s/' % sl
     pn = _price_num(pr)
+    if brand == 'Walmec': brand = 'Walcom'  # бренд пишем только Walcom
     sti = ti if (not brand or brand.lower() in ti.lower()) else brand + ' ' + ti
     title = '%s — купить в Астане%s | Avtokraski_Pro' % (sti, (', цена %s' % pr) if pn else '')
     dsc = (ds.replace('\n', ' ')[:150].rsplit(' ', 1)[0] + '…') if len(ds) > 155 else ds
