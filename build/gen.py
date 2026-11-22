@@ -590,6 +590,7 @@ shutil.copy(B + '/llms.txt', OUT + '/llms.txt')  # «паспорт» сайта
 open(OUT + '/assets/app.js', 'w', encoding='utf8').write(APP_JS)
 os.makedirs(OUT + '/docs', exist_ok=True)
 shutil.copy(B + '/D8125-tehkarta.pdf', OUT + '/docs/D8125-tehkarta.pdf')
+shutil.copy(B + '/D8173-tehkarta.pdf', OUT + '/docs/D8173-tehkarta.pdf')
 shutil.copy(B + '/emakout-7320v-tehkarta.pdf', OUT + '/docs/emakout-7320v-tehkarta.pdf')
 shutil.copy(B + '/emakout-5335sp-tehkarta.pdf', OUT + '/docs/emakout-5335sp-tehkarta.pdf')
 os.makedirs(OUT + '/docs/sovety', exist_ok=True)
