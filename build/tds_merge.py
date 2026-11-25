@@ -12,7 +12,7 @@ for fn, pref in [('app.js', '/docs/'), ('code.js', 'docs/'), ('draft_app.js', 'd
     for k, o in docs.items():
         ent = ser(k, o, pref)
         # убрать прежнюю запись этого ключа (наша, из tds_ru), если есть
-        body = re.sub(r',' + re.escape(json.dumps(k, ensure_ascii=False)) + r':\{pdf:"[^"]*",pg:\d+,src:"Перевод Avtokraski_Pro[^"]*",rows:\[.*?\]\]\}(?=[,}])', '', body)
+        body = re.sub(r',' + re.escape(json.dumps(k, ensure_ascii=False)) + r':\{pdf:"[^"]*",pg:\d+,src:"(?:Перевод )?Avtokraski_Pro[^"]*",rows:\[.*?\]\]\}(?=[,}])', '', body)
         if json.dumps(k, ensure_ascii=False) + ':{' in body:
             print(fn, 'уже есть, пропуск:', k); continue
         body = body[:-1] + ',' + ent + '}'

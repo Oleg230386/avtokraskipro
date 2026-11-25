@@ -73,7 +73,7 @@ def page_html(meta):
     return f"""<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><style>{CSS}</style></head><body>
 <div class="hd"><div><div class="k">{e(brand)} · Техническое описание</div><h1>{e(meta['title'])}</h1><div class="sub">{e(meta.get('sub',''))}</div></div>
 <div class="co">Avtokraski_Pro<br>avtokraskipro.kz</div></div>
-<div class="note">Перевод технической карты производителя на русский язык. Оригинал: {e(meta['orig'])}, английский язык. Перевод выполнен Avtokraski_Pro для удобства покупателей; при расхождениях действует оригинал производителя.</div>
+<div class="note">{e(meta['note']) if meta.get('note') else 'Перевод технической карты производителя на русский язык. Оригинал: ' + e(meta['orig']) + ', английский язык. Перевод выполнен Avtokraski_Pro для удобства покупателей; при расхождениях действует оригинал производителя.'}</div>
 {re.sub(r' (°C|%|мкм|мин|бар|мм|г/л|мл|сек|ч\b)', '\u00a0\\1', meta['body'])}
 <div class="ft">Avtokraski_Pro · Астана, ул. Талапкерская 24А · avtokraskipro.kz · WhatsApp +7 777 118 73 55</div>
 </body></html>"""
@@ -114,6 +114,7 @@ def main():
                 pages = render(n, meta, br); print(n, pages, 'стр.')
             state[n] = {'h': h, 'pg': pages}
             src = f"Перевод Avtokraski_Pro с английского. Оригинал: {meta['orig']}"
+            if meta.get('src'): src = meta['src']
             for k in meta['keys']:
                 docs[k] = {'pdf': f'{n}-tehkarta.pdf', 'pg': pages, 'src': src, 'rows': meta['rows']}
         br.close()
