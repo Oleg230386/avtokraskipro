@@ -13,12 +13,12 @@ var HST=null;
 function hsEsc(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function initHS(){var el=document.getElementById("hs");if(!el||el.getAttribute("data-ok"))return;el.setAttribute("data-ok","1");if(HST){clearTimeout(HST);HST=null}
 var ids=[];TOP.forEach(function(code){for(var i=0;i<CD.length;i++){var m=CD[i].match(/<h2>([\s\S]*?)<\/h2>/);if(m&&(m[1].indexOf(code+" · ")===0||m[1]===code||(m[1].indexOf(" · ")>0&&(m[1].slice(-(code.length+3))===" · "+code||m[1].slice(-(code.length+1))===" "+code)))){ids.push(i);break}}});
-var h='<a class="hs-brand" href="#home"><img data-img="ig-av" alt="" width="32" height="32"><b>AVTOKRASKI<span>_PRO</span></b><small>· популярные товары</small></a><div class="hs-vp"><div class="hs-tr">';
+var h='<a class="hs-brand" href="#home"><img data-img="ig-av" alt="" width="32" height="32"><b>AVTOKRASKI<span>_PRO</span></b><small>· популярные товары</small></a><div class="hs-vp"><div class="hs-tr">';h+='<a class="hs-it hs-kurs" href="#kurs-kolorista" aria-label="Курс «Колорист с нуля до сотни» — обучение колористике"><img data-img="art-kolorist-s" alt="Курс «Колорист с нуля до сотни»" width="300" height="300"></a>';
 ids.forEach(function(i){var m=CD[i].match(/data-hs="([^"]+)"/)||CD[i].match(/data-img="([^"]+)"/),t=CD[i].match(/<h2>([\s\S]*?)<\/h2>/);if(!m)return;h+='<div class="hs-it" data-i="'+i+'" role="button" tabindex="0" aria-label="'+hsEsc(t?t[1]:"")+'"><img data-img="'+m[1]+'" alt="'+hsEsc(t?t[1]:"")+'" width="300" height="300"></div>'});
 h+='</div></div><div class="hs-nav"><button type="button" class="hs-prev" aria-label="Назад">‹</button><button type="button" class="hs-next" aria-label="Вперёд">›</button></div><div class="hs-bar"></div>';
 el.innerHTML=h;setImg(el.querySelector(".hs-brand img"));
 var tr=el.querySelector(".hs-tr"),IT=el.querySelectorAll(".hs-it"),N=IT.length,cur=0,bar=el.querySelector(".hs-bar"),paused=false;
-function mix(){var a=[].slice.call(tr.children);for(var j=a.length-1;j>0;j--){var r=Math.floor(Math.random()*(j+1)),t=a[j];a[j]=a[r];a[r]=t}a.forEach(function(x){tr.appendChild(x)});IT=tr.querySelectorAll(".hs-it");load()}mix();
+function mix(){var a=[].slice.call(tr.children);for(var j=a.length-1;j>0;j--){var r=Math.floor(Math.random()*(j+1)),t=a[j];a[j]=a[r];a[r]=t}a.forEach(function(x){tr.appendChild(x)});var k0=tr.querySelector(".hs-kurs");if(k0)tr.insertBefore(k0,tr.firstChild);IT=tr.querySelectorAll(".hs-it");load()}mix();
 function vis(){var w=window.innerWidth;return w<=560?1:(w<=900?2:4)}
 function load(){var v=vis();for(var k=cur;k<cur+v*2&&k<N;k++){var im=IT[k].querySelector("img");if(im&&!im.getAttribute("src"))setImg(im)}}
 function go(k){var v=vis(),mx=Math.max(0,N-v);if(k>mx)mix();cur=k>mx?0:(k<0?mx:k);tr.style.transform="translateX("+(-cur*100/v)+"%)";load();run()}
@@ -29,7 +29,7 @@ var x0=null;el.addEventListener("touchstart",function(e){x0=e.touches[0].clientX
 window.addEventListener("resize",function(){if(document.body.contains(el))go(cur)});
 function more(it){var w=document.createElement("div");w.innerHTML=CD[+it.getAttribute("data-i")];var c=w.firstChild,sb=c.querySelector(".sub"),t=c.querySelector("h2").textContent,km=sb?sb.textContent.match(/^(?:Код|Коды): (.*?)(?:\. (?:Фасовка|Қаптама):.*)?$/):null,cd=km?km[1]:"",nm=cd&&t.indexOf(cd+" · ")===0?t.slice(cd.length+3):(cd&&t.lastIndexOf(" · ")>0&&t.slice(-cd.length)===cd?t.slice(0,t.lastIndexOf(" · ")):t),wa=c.querySelector("a.wa");
 if(wa)wa.setAttribute("href",u("Здравствуйте! Интересует товар: "+nm+(cd?" (код "+cd+")":"")+". Подскажите цену и наличие."));var a=it.querySelector("img"),b=c.querySelector("img.ph");if(a&&b&&a.getAttribute("src"))b.setAttribute("src",a.getAttribute("src"));if(window.openP)window.openP(c)}
-[].forEach.call(IT,function(it){it.addEventListener("click",function(){more(it)});it.addEventListener("keydown",function(e){if(e.key==="Enter")more(it)})});
+[].forEach.call(IT,function(it){if(!it.hasAttribute("data-i"))return;it.addEventListener("click",function(){more(it)});it.addEventListener("keydown",function(e){if(e.key==="Enter")more(it)})});
 go(0);if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches){paused=true;run()}}
 function bindHome(){initHS();var pc=document.getElementById("pc");if(pc){var mk=document.getElementById("mk"),cc=document.getElementById("cc"),kt=document.getElementById("kt"),kb=document.getElementById("kb");
 function a(){pc.href=u("Здравствуйте! Нужна краска. Марка и модель: "+(mk.value.trim()||"—")+". Код цвета: "+(cc.value.trim()||"—")+".");kb.href=u("Здравствуйте! Подберите, пожалуйста, комплект для покраски (краска, лак, отвердитель и разбавитель одной системы). Что красим: "+(kt.value.trim()||"—")+".")}

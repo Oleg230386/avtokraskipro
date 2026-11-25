@@ -10,7 +10,7 @@ var HST=null;
 function initHS(){var el=document.getElementById("hs");if(!el||el.getAttribute("data-ok"))return;el.setAttribute("data-ok","1");if(HST){clearTimeout(HST);HST=null}
 
 var tr=el.querySelector(".hs-tr"),IT=el.querySelectorAll(".hs-it"),N=IT.length,cur=0,bar=el.querySelector(".hs-bar"),paused=false;
-function mix(){var a=[].slice.call(tr.children);for(var j=a.length-1;j>0;j--){var r=Math.floor(Math.random()*(j+1)),t=a[j];a[j]=a[r];a[r]=t}a.forEach(function(x){tr.appendChild(x)});IT=tr.querySelectorAll(".hs-it");load()}mix();
+function mix(){var a=[].slice.call(tr.children);for(var j=a.length-1;j>0;j--){var r=Math.floor(Math.random()*(j+1)),t=a[j];a[j]=a[r];a[r]=t}a.forEach(function(x){tr.appendChild(x)});var k0=tr.querySelector(".hs-kurs");if(k0)tr.insertBefore(k0,tr.firstChild);IT=tr.querySelectorAll(".hs-it");load()}mix();
 function vis(){var w=window.innerWidth;return w<=560?1:(w<=900?2:4)}
 function load(){var v=vis();for(var k=cur;k<cur+v*2&&k<N;k++){var im=IT[k].querySelector("img");if(im&&!im.getAttribute("src"))setImg(im)}}
 function go(k){var v=vis(),mx=Math.max(0,N-v);if(k>mx)mix();cur=k>mx?0:(k<0?mx:k);tr.style.transform="translateX("+(-cur*100/v)+"%)";load();run()}
@@ -21,7 +21,7 @@ var x0=null;el.addEventListener("touchstart",function(e){x0=e.touches[0].clientX
 window.addEventListener("resize",function(){if(document.body.contains(el))go(cur)});
 function more(it){var w=document.createElement("div");w.innerHTML=(window.HSC||{})[it.getAttribute("data-i")]||"";if(!w.firstChild)return;var c=w.firstChild,sb=c.querySelector(".sub"),t=c.querySelector("h2").textContent,km=sb?sb.textContent.match(/^(?:Код|Коды): (.*?)(?:\. (?:Фасовка|Қаптама):.*)?$/):null,cd=km?km[1]:"",nm=cd&&t.indexOf(cd+" · ")===0?t.slice(cd.length+3):(cd&&t.lastIndexOf(" · ")>0&&t.slice(-cd.length)===cd?t.slice(0,t.lastIndexOf(" · ")):t),wa=c.querySelector("a.wa");
 if(wa)wa.setAttribute("href",u("Здравствуйте! Интересует товар: "+nm+(cd?" (код "+cd+")":"")+". Подскажите цену и наличие."));var a=it.querySelector("img"),b=c.querySelector("img.ph");if(a&&b&&a.getAttribute("src"))b.setAttribute("src",a.getAttribute("src"));var hl=it.querySelector("a.hs-a,a.pl");if(hl)c.setAttribute("data-pp",hl.getAttribute("href"));if(window.openP)window.openP(c)}
-[].forEach.call(IT,function(it){it.addEventListener("click",function(e){if(e.target.closest("a.pl"))return;e.preventDefault();more(it)});it.addEventListener("keydown",function(e){if(e.key==="Enter")more(it)})});
+[].forEach.call(IT,function(it){if(!it.hasAttribute("data-i"))return;it.addEventListener("click",function(e){if(e.target.closest("a.pl"))return;e.preventDefault();more(it)});it.addEventListener("keydown",function(e){if(e.key==="Enter")more(it)})});
 go(0);if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches){paused=true;run()}}
 
 initHS();
