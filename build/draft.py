@@ -36,6 +36,8 @@ print('big packs', len(packs), len(BIGI))
 TDD = os.path.join(ROOT, 'site_docs'); os.makedirs(TDD, exist_ok=True)
 _tn = sorted(set(v['pdf'][:-4] for v in json.load(open(B + '/tds_ru/docs.json', encoding='utf8')).values()))
 _tf = sorted(f for f in os.listdir(B + '/docs') if f.endswith('.webp') and f.rsplit('-', 1)[0] in _tn)
+# остальные техкарты (не из tds_ru) — тоже в пакеты, после переводных (чтобы освободить файлы в артефакте, 25.11.2026)
+_tf += sorted(f for f in os.listdir(B + '/docs') if f.endswith('.webp') and f.rsplit('-', 1)[0] not in _tn)
 tpk, TDP, tsz = [{}], {}, 0
 for f in _tf:
     d = 'data:image/webp;base64,' + base64.b64encode(open(B + '/docs/' + f, 'rb').read()).decode()
