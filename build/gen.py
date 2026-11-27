@@ -571,6 +571,8 @@ Redirect 301 /tovar/w013013-kraskopult-genesi-carbonio-360-evo-clear-hte-1-3/ ht
 Redirect 301 /tovar/w010013-rem-komplekt-genesi-carbonio-360-evo-clear-hte-1-3/ https://avtokraskipro.kz/tovar/w010013-rem-komplekt-genesi-carbonio-360-evo-clear-halo-hte-1-2-1-3-1/
 Redirect 301 /tovar/w020013-rem-komplekt-genesi-carbonio-360-evo-base-hte-1-3/ https://avtokraskipro.kz/tovar/w020013-rem-komplekt-genesi-carbonio-360-evo-base-halo-hte-1-2-1-3-1-4/
 Redirect 301 /tovar/50160-b-moechnyj-pistolet-austromec-hydrojet/ https://avtokraskipro.kz/tovar/50160-b-moechnyj-pistolet-asturomec-hydrojet/
+Redirect 301 /tovar/rx153a-elektricheskaya-shlifovalnaya-mashinka-hod-3mm-pl-150mm-bez/ https://avtokraskipro.kz/tovar/rx253a-shlifovalnaya-mashinka-ekscentrikovaya-elektricheskaya-hod-3-mm-150-mm/
+Redirect 301 /tovar/rx156a-elektricheskaya-shlifovalnaya-mashinka-hod-6mm-pl-150mm-bez/ https://avtokraskipro.kz/tovar/rx256a-shlifovalnaya-mashinka-ekscentrikovaya-elektricheskaya-hod-6-mm-150-mm/
 Redirect 301 /tovar/hr81ml-lux-nabor-polirovalnoj-mashinki-s-udlinennoj-shejkoj-sm/ https://avtokraskipro.kz/tovar/hr81ml-lux-nabor-rupes-bigfoot-ibrid-nano-s-udlinennoj-shejkoj-long/
 
 # Перенаправление на https: включить (убрать # в 4 строках ниже) после установки SSL-сертификата
